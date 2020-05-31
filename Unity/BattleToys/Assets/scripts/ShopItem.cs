@@ -10,7 +10,7 @@ public class ShopItem : ScriptableObject
     public new string name="defaultName";
     public GameObject prefab;
 
-    public Texture icon;
+    public Sprite icon;
 
     public string description = "No description available";
 

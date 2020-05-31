@@ -54,8 +54,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  centerOfMass: {fileID: 0}
-  cannonBallPrefab: {fileID: 0}
+  centerOfMass: {fileID: 7475169172439016108}
+  cannonBallPrefab: {fileID: 582927963240110583, guid: a4d88710ea1d1e3459b7bd3c210ff385,
+    type: 3}
 --- !u!54 &4967014504017066768
 Rigidbody:
   m_ObjectHideFlags: 0

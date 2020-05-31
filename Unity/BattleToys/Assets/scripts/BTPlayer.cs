@@ -176,6 +176,11 @@ public class BTPlayer : NetworkBehaviour
     {
         myCannon=cannon;
     }
+
+    public void InstantiateShopItem(GameObject prefab)
+    {
+        GameObject.Instantiate(prefab, this.transform.position, this.transform.rotation);
+    }
 }
 
 public enum BTTeam

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 89b5114617511924588f6bf209830973, type: 3}
-  m_Name: CatapultData
+  m_Name: TrikeData
   m_EditorClassIdentifier: 
-  name: Katapult
-  prefab: {fileID: 59765300447578355, guid: 2c369e45a2fcdc7468c68c37f3ace97a, type: 3}
-  icon: {fileID: 21300000, guid: d0b7f16aba9b63d4d97f212fc2133245, type: 3}
-  description: "Katapult. Gut gegen Geb\xE4ude oder unbewegliche Gegenstaende"
+  name: Trike
+  prefab: {fileID: 5502772229358014209, guid: bb52e304ed09c7645a7655aaad63717f, type: 3}
+  icon: {fileID: 21300000, guid: 8e38db2fe3561a14e9efdb2247f61aee, type: 3}
+  description: Dreirad mit Deppelkatapult. Schnell, wendig.
   costPoints: 10
