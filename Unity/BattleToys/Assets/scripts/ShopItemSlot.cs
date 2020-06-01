@@ -27,6 +27,9 @@ public class ShopItemSlot : MonoBehaviour
     {
         Debug.Log("I was clicked: " + shopItem.name);
 
-        shop.player.InstantiateShopItem(shopItem.prefab);
+        if ((shop.player!=null) && (shop.player.IsShopping()))
+        {
+            shop.player.InstantiateShopItem(shopItem.prefab);
+        }
     }
 }

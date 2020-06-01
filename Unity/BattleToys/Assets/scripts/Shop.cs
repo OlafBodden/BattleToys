@@ -26,25 +26,24 @@ public class Shop : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-
-        for (int i=0; i<shopItems.Count; i++)
-        {
-            ShopItem item=shopItems[i];
-            itemSlots[i].GetComponent<ShopItemSlot>().Activate(item, this);
-            //itemSlots[i].gameObject.SetActive(true);
-            //itemSlots[i].transform.GetChild(0).GetComponent<Image>().sprite=item.icon;
-        }
-
-        for (int i=shopItems.Count; i<itemSlots.Length; i++)
+        //Shop is not open... Hide all slots.
+        for (int i=0; i<itemSlots.Length; i++)
         {
             itemSlots[i].gameObject.SetActive(false);
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OpenShop(BTPlayer player)
     {
-        
+        this.player=player;
+
+
+        //Shop is now open. Show slots.        
+        for (int i=0; i<shopItems.Count; i++)
+        {
+            ShopItem item=shopItems[i];
+            itemSlots[i].GetComponent<ShopItemSlot>().Activate(item, this);
+        }
+
     }
 }

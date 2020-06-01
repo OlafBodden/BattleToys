@@ -78,7 +78,7 @@ public class Cannon : NetworkBehaviour
         {
             if (p.hasAuthority)
             {
-                p.SetCannon(this);
+               // p.SetCannon(this);
             }
         }
     }

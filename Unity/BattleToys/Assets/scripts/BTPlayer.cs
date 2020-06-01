@@ -24,10 +24,16 @@ public class BTPlayer : NetworkBehaviour
 
     public Canvas chatCanvas;
 
+    Shop shop;
+
+    [SerializeField] PlayerState playerState=PlayerState.Born;
+
+    [SerializeField] Placeable currentPlaceable=null;
 
     void Awake() 
     {
         if (Camera.main) Camera.main.gameObject.SetActive(false);
+        playerState=PlayerState.Born;
     }
 
     public override void OnStartAuthority() 
@@ -37,7 +43,9 @@ public class BTPlayer : NetworkBehaviour
         
 
         GetTeam();
-        CreateCannon();
+
+        OpenShop();
+        playerState=PlayerState.Shopping;
         
         this.gameObject.name="Player_ " + myTeam.ToString();
 
@@ -60,46 +68,66 @@ public class BTPlayer : NetworkBehaviour
     {
         if (!base.hasAuthority) return;
 
-        RotateCannonPipe();
 
-        RotateCannon();
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (playerState==PlayerState.PlacingShopObject)
         {
-            myCannon.ResetPower();
+            if (currentPlaceable!=null)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    currentPlaceable.PlaceObject();
+                    ShopItemPlaced();
+                }
+
+                if (Input.GetMouseButtonDown(1))
+                {
+                    currentPlaceable.CanclePlacement();
+                    currentPlaceable=null;
+                    playerState=PlayerState.Shopping;   //Back to shopping
+                }
+            }
         }
 
-        if (Input.GetKey(KeyCode.Space))
-        {
-            myCannon.IncreasePower();
-        }
+        // RotateCannonPipe();
+
+        // RotateCannon();
+
+        // if (Input.GetKeyDown(KeyCode.Space))
+        // {
+        //     myCannon.ResetPower();
+        // }
+
+        // if (Input.GetKey(KeyCode.Space))
+        // {
+        //     myCannon.IncreasePower();
+        // }
 
         
 
 
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            myCannon.Fire();
-            //CmdFireCannon(myCannon.currentPower/100f);
-        }
+        // if (Input.GetKeyUp(KeyCode.Space))
+        // {
+        //     myCannon.Fire();
+        //     //CmdFireCannon(myCannon.currentPower/100f);
+        // }
 
     }
 
-    [Client]
-    void RotateCannonPipe()
-    {
-        int rotX=(Input.GetKey(KeyCode.UpArrow)==true ? 1 : 0)  - (Input.GetKey(KeyCode.DownArrow)==true? 1 : 0) ;
+    // [Client]
+    // void RotateCannonPipe()
+    // {
+    //     int rotX=(Input.GetKey(KeyCode.UpArrow)==true ? 1 : 0)  - (Input.GetKey(KeyCode.DownArrow)==true? 1 : 0) ;
 
-        myCannon.RotateCannonPipe(rotX);
-    }
+    //     myCannon.RotateCannonPipe(rotX);
+    // }
 
-    [Client]
-    void RotateCannon()
-    {
-        int rotY=(Input.GetKey(KeyCode.RightArrow)==true ? 1 : 0)  - (Input.GetKey(KeyCode.LeftArrow)==true? 1 : 0) ;
+    // [Client]
+    // void RotateCannon()
+    // {
+    //     int rotY=(Input.GetKey(KeyCode.RightArrow)==true ? 1 : 0)  - (Input.GetKey(KeyCode.LeftArrow)==true? 1 : 0) ;
 
-        myCannon.RotateCannon(rotY);
-    }
+    //     myCannon.RotateCannon(rotY);
+    // }
 
 
 
@@ -124,62 +152,92 @@ public class BTPlayer : NetworkBehaviour
 
     }
 
-    [Client]
-    void CreateCannon()
-    {
-        Transform t=null; 
-        if (myTeam==BTTeam.red)
-        {
-            t=GameObject.Find("CannonSpawnPointRed").transform;
-        } else if (myTeam==BTTeam.blue)
-        {
-            t=GameObject.Find("CannonSpawnPointBlue").transform;
-        }
+    // [Client]
+    // void CreateCannon()
+    // {
+    //     Transform t=null; 
+    //     if (myTeam==BTTeam.red)
+    //     {
+    //         t=GameObject.Find("CannonSpawnPointRed").transform;
+    //     } else if (myTeam==BTTeam.blue)
+    //     {
+    //         t=GameObject.Find("CannonSpawnPointBlue").transform;
+    //     }
 
-        CmdSpawnCannon(t.position,t.rotation);
+    //     CmdSpawnCannon(t.position,t.rotation);
 
-        //go.name="Cannon_" + myTeam.ToString();
+    //     //go.name="Cannon_" + myTeam.ToString();
 
-        //myCannon=go.GetComponent<Cannon>();
+    //     //myCannon=go.GetComponent<Cannon>();
 
-        // foreach(Cannon c in Transform.FindObjectsOfType<Cannon>())
-        // {
-        //     if (c.hasAuthority)
-        //     {
-        //         myCannon=c;
-        //     }
-        // }
-    }
+    //     // foreach(Cannon c in Transform.FindObjectsOfType<Cannon>())
+    //     // {
+    //     //     if (c.hasAuthority)
+    //     //     {
+    //     //         myCannon=c;
+    //     //     }
+    //     // }
+    // }
 
-    [Command]
-    void CmdSpawnCannon(Vector3 pos, Quaternion rot)
-    {
+    // [Command]
+    // void CmdSpawnCannon(Vector3 pos, Quaternion rot)
+    // {
 
-        //Respawn to get Authority
-        //GameObject newCannon=GameObject.Instantiate(cannonPrefab,pos,rot);
-        //newCannon.name="Cannon_" + myTeam.ToString();
+    //     //Respawn to get Authority
+    //     //GameObject newCannon=GameObject.Instantiate(cannonPrefab,pos,rot);
+    //     //newCannon.name="Cannon_" + myTeam.ToString();
 
-        GameObject newCannon=GameObject.Instantiate(cannonPrefab,pos,rot);
-        newCannon.name="Cannon_" + myTeam.ToString();
+    //     GameObject newCannon=GameObject.Instantiate(cannonPrefab,pos,rot);
+    //     newCannon.name="Cannon_" + myTeam.ToString();
 
-        NetworkServer.Spawn(newCannon,base.connectionToClient);
+    //     NetworkServer.Spawn(newCannon,base.connectionToClient);
 
  
-        // if (myCannon!=null)
-        // {
-        //     myCannon.GetComponent<NetworkIdentity>().AssignClientAuthority(base.connectionToClient);
-        // }
+    //     // if (myCannon!=null)
+    //     // {
+    //     //     myCannon.GetComponent<NetworkIdentity>().AssignClientAuthority(base.connectionToClient);
+    //     // }
 
-    }
+    // }
 
-    public void SetCannon(Cannon cannon)
-    {
-        myCannon=cannon;
-    }
+    // public void SetCannon(Cannon cannon)
+    // {
+    //     myCannon=cannon;
+    // }
 
+    ///Called by ShopItemSlot, if Player clicked on item
     public void InstantiateShopItem(GameObject prefab)
     {
-        GameObject.Instantiate(prefab, this.transform.position, this.transform.rotation);
+        GameObject go=GameObject.Instantiate(prefab, this.transform.position, this.transform.rotation);
+
+        currentPlaceable=go.AddComponent<Placeable>();
+
+        currentPlaceable.Init(this);
+
+        //We are now in Placing-Mode
+        playerState=PlayerState.PlacingShopObject;
+
+    }
+
+    public void ShopItemPlaced()
+    {
+        
+        currentPlaceable=null;
+
+        //Go on shopping
+        playerState=PlayerState.Shopping;
+    }
+
+    void OpenShop()
+    {
+        shop=(Shop)Transform.FindObjectOfType<Shop>();
+
+        shop.OpenShop(this);
+    }
+
+    public bool IsShopping()
+    {
+        return (playerState==PlayerState.Shopping);
     }
 }
 
@@ -189,4 +247,17 @@ public enum BTTeam
     blue    
 
     ,nothing
+}
+
+public enum PlayerState
+{
+    Born,
+
+    Shopping,
+
+    PlacingShopObject,
+
+    ReadyForMatch,
+
+    InMatch
 }
