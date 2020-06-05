@@ -1,0 +1,69 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Moveable : MonoBehaviour
+{
+
+    [SerializeField] bool moveByPhysics=false;
+
+    [SerializeField] float maxVelocity=5f;
+
+    [SerializeField] float PS=500f;
+
+    BTPlayer player;
+
+    Vector3 destinationVector;
+
+    float lastSqrMag;
+
+    Vector3 desiredVelocity;
+
+    Rigidbody _rigidbody;
+
+    public void Init(BTPlayer player)
+    {
+        this.player=player;
+        _rigidbody=GetComponent<Rigidbody>();
+        _rigidbody.isKinematic=!moveByPhysics;
+    }
+
+
+    public void MoveToDestination_ByPhysics(Vector3 destination)
+    {
+        this.destinationVector=destination;
+
+        // calculate directional vector to target
+        var directionalVector  = (destination - transform.position).normalized * maxVelocity;
+        
+        // reset lastSqrMag
+        lastSqrMag = Mathf.Infinity;
+        
+        // apply to rigidbody velocity
+        desiredVelocity = directionalVector;
+    }
+
+    void Update() 
+    {
+        // check the current sqare magnitude
+        float sqrMag = (destinationVector - transform.position).sqrMagnitude;
+        
+        // check this against the lastSqrMag
+        // if this is greater than the last,
+        // rigidbody has reached target and is now moving past it
+        if ( sqrMag > lastSqrMag )
+        {
+            // rigidbody has reached target and is now moving past it
+            // stop the rigidbody by setting the velocity to zero
+            desiredVelocity = Vector3.zero;
+        } 
+        
+        // make sure you update the lastSqrMag
+        lastSqrMag = sqrMag;
+    }
+ 
+    void FixedUpdate() 
+    {
+        _rigidbody.velocity = desiredVelocity;
+    }
+}

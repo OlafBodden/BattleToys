@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 277943287}
   - component: {fileID: 277943286}
   - component: {fileID: 277943285}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CannonHud
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 908692104}
   - component: {fileID: 908692106}
   - component: {fileID: 908692105}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 8287019245064765823}
   - component: {fileID: 4321577572454605628}
   - component: {fileID: 3237388311914602666}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CannonTyre1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 2599609930204536783}
   - component: {fileID: 200369915889720891}
   - component: {fileID: 2510400052536371153}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CannonChassis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -346,6 +346,56 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.6000001, y: 0.5, z: 4}
   m_Center: {x: 0, y: 0.48, z: 0}
+--- !u!1 &3063456064440383004
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4448396931515767359}
+  - component: {fileID: 9003405391280079060}
+  m_Layer: 11
+  m_Name: Projector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4448396931515767359
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3063456064440383004}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8251509269223666017}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!119 &9003405391280079060
+Projector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3063456064440383004}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_NearClipPlane: 0.1
+  m_FarClipPlane: 3.6
+  m_FieldOfView: 60
+  m_AspectRatio: 1
+  m_Orthographic: 1
+  m_OrthographicSize: 4.34
+  m_Material: {fileID: 2100000, guid: abe024112baebd145880816d23495b4b, type: 2}
+  m_IgnoreLayers:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!1 &4832465497892073021
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,7 +408,7 @@ GameObject:
   - component: {fileID: 7976616874397883127}
   - component: {fileID: 1501972854992136258}
   - component: {fileID: 4832465497892073022}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CannonPipe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -456,7 +506,11 @@ GameObject:
   - component: {fileID: 4960827340180259693}
   - component: {fileID: -7640789090470197677}
   - component: {fileID: 3908229046308989694}
-  m_Layer: 0
+  - component: {fileID: 1847226494}
+  - component: {fileID: 1847226495}
+  - component: {fileID: 1847226496}
+  - component: {fileID: -1114224833353348663}
+  m_Layer: 11
   m_Name: Cannon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -481,6 +535,7 @@ Transform:
   - {fileID: 8806451226968132133}
   - {fileID: 8806451225786770650}
   - {fileID: 277943284}
+  - {fileID: 4448396931515767359}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -507,7 +562,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4960827340180259698}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8122439a0bdafb743be009bca75431fd, type: 3}
   m_Name: 
@@ -529,6 +584,7 @@ MonoBehaviour:
   rotatePipeSpeed: 10
   prefabExplosion: {fileID: 176706, guid: 92482c14dfe8a8f43ace5e18460a47c7, type: 3}
   prefabShootEffect: {fileID: 191916, guid: dec1e5a6a484ea44485b918f2c2f2315, type: 3}
+  cannonRotY: 0
 --- !u!95 &4960827340180259693
 Animator:
   serializedVersion: 3
@@ -571,7 +627,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4960827340180259698}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
   m_Name: 
@@ -582,6 +638,66 @@ MonoBehaviour:
   localPositionSensitivity: 0.01
   localRotationSensitivity: 0.01
   localScaleSensitivity: 0.01
+--- !u!114 &1847226494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4960827340180259698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd91d6fb622c32048a91a5d39f975304, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1847226495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4960827340180259698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2c48b5ad246b9842b505509f8bd6df6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+--- !u!114 &1847226496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4960827340180259698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8c7ba7e9c7d84e44b60c40dfd4d5241, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!195 &-1114224833353348663
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4960827340180259698}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &5000509427182174648
 GameObject:
   m_ObjectHideFlags: 0
@@ -593,7 +709,7 @@ GameObject:
   - component: {fileID: 3693080925907938117}
   - component: {fileID: 7756013855496857738}
   - component: {fileID: 4392812991411795169}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: FireringMechanism
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -672,7 +788,7 @@ GameObject:
   - component: {fileID: 4420371119354296010}
   - component: {fileID: 1040350325094134757}
   - component: {fileID: 3320772986362435073}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -743,7 +859,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5991844780058367878}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ShootPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -773,7 +889,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8806451225786770650}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: COM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -788,7 +904,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8806451225786770649}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.63, z: 0}
+  m_LocalPosition: {x: 0, y: 0.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8251509269223666017}
@@ -805,7 +921,7 @@ GameObject:
   - component: {fileID: 8806451225848599646}
   - component: {fileID: 8806451225848599640}
   - component: {fileID: 8806451225848599647}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CannonTyre1 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -883,7 +999,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8806451225938560980}
   - component: {fileID: 8806451225938560981}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Tyre1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -946,7 +1062,7 @@ GameObject:
   - component: {fileID: 8806451226121436108}
   - component: {fileID: 8806451226121436110}
   - component: {fileID: 8806451226121436109}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CannonTyre1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1025,7 +1141,7 @@ GameObject:
   - component: {fileID: 8806451226292312806}
   - component: {fileID: 8806451226292312800}
   - component: {fileID: 8806451226292312807}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CannonTyre1 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1103,7 +1219,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8806451226503448782}
   - component: {fileID: 8806451226503448783}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Tyre1 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1165,7 +1281,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8806451226906774031}
   - component: {fileID: 8806451226906774024}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Tyre1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1227,7 +1343,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8806451226968132133}
   - component: {fileID: 8806451226968132134}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Tyre1 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

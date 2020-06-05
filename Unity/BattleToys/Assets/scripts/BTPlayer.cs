@@ -30,6 +30,8 @@ public class BTPlayer : NetworkBehaviour
 
     [SerializeField] Placeable currentPlaceable=null;
 
+    Selectable selectedUnit;
+
     void Awake() 
     {
         if (Camera.main) Camera.main.gameObject.SetActive(false);
@@ -75,8 +77,11 @@ public class BTPlayer : NetworkBehaviour
             {
                 if (Input.GetMouseButtonDown(0))
                 {
-                    currentPlaceable.PlaceObject();
-                    ShopItemPlaced();
+                    GameObject go=currentPlaceable.PlaceObject();
+                    if (go)
+                    {
+                        ShopItemPlaced(go);
+                    }
                 }
 
                 if (Input.GetMouseButtonDown(1))
@@ -84,6 +89,52 @@ public class BTPlayer : NetworkBehaviour
                     currentPlaceable.CanclePlacement();
                     currentPlaceable=null;
                     playerState=PlayerState.Shopping;   //Back to shopping
+                }
+            }
+        }
+
+        if (playerState==PlayerState.Shopping)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                //Did we click on an unit?
+                Ray ray = myCam.ScreenPointToRay (Input.mousePosition);
+                RaycastHit hit;
+                int layerMaskObstacle=LayerMask.GetMask(new string[]{"Units","Buildings"});
+                if (Physics.Raycast(ray, out hit,  100, layerMaskObstacle))
+                {
+                    Selectable newSelection= hit.rigidbody.gameObject.GetComponent<Selectable>();
+
+                    if (newSelection!=selectedUnit)
+                    {
+                        if (selectedUnit) selectedUnit.DeSelect();
+
+                        selectedUnit=newSelection;
+
+                        if (selectedUnit) selectedUnit.Select();
+                    }
+                } else
+                {
+                    if (selectedUnit) selectedUnit.DeSelect();
+                }
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                Ray ray = myCam.ScreenPointToRay (Input.mousePosition);
+                RaycastHit hit;
+                int layerMaskFloor=LayerMask.GetMask(new string[]{"Floor"});
+                if (Physics.Raycast(ray, out hit,  100, layerMaskFloor))
+                {
+                    if (selectedUnit)
+                    {
+                        Moveable moveable=selectedUnit.gameObject.GetComponent<Moveable>();
+
+                        if (moveable)
+                        {
+                            moveable.MoveToDestination(hit.point);
+                        }
+                    }
                 }
             }
         }
@@ -219,13 +270,26 @@ public class BTPlayer : NetworkBehaviour
 
     }
 
-    public void ShopItemPlaced()
+    public void ShopItemPlaced(GameObject placedObject)
     {
         
         currentPlaceable=null;
 
         //Go on shopping
         playerState=PlayerState.Shopping;
+
+        //if (!base.isServer)
+        //{
+            CmdInstantiateShopItem(placedObject);
+
+        //}
+    }
+
+    [Command]
+    void CmdInstantiateShopItem(GameObject go)
+    {
+        NetworkServer.Spawn(go,base.connectionToClient);
+
     }
 
     void OpenShop()

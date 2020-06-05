@@ -1,18 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class Trike : MonoBehaviour
+public class Trike : NetworkBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    [SerializeField] Transform centerOfMass;
+    Rigidbody _rigidbody;
+
+
+
+    void Awake()
     {
-        
+        _rigidbody=GetComponent<Rigidbody>();
+
+        _rigidbody.centerOfMass=centerOfMass.localPosition;
     }
 }

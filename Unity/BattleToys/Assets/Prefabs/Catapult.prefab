@@ -1,5 +1,55 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &76322959
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 76322960}
+  - component: {fileID: 76322961}
+  m_Layer: 11
+  m_Name: Projector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &76322960
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 76322959}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 1.58, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3931376262698007264}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!119 &76322961
+Projector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 76322959}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_NearClipPlane: 0.1
+  m_FarClipPlane: 3.6
+  m_FieldOfView: 60
+  m_AspectRatio: 1
+  m_Orthographic: 1
+  m_OrthographicSize: 4.34
+  m_Material: {fileID: 2100000, guid: abe024112baebd145880816d23495b4b, type: 2}
+  m_IgnoreLayers:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!1 &59765300447578355
 GameObject:
   m_ObjectHideFlags: 0
@@ -11,7 +61,9 @@ GameObject:
   - component: {fileID: 3931376262698007264}
   - component: {fileID: 6278042609481947853}
   - component: {fileID: 4967014504017066768}
-  m_Layer: 0
+  - component: {fileID: 5740605852029061573}
+  - component: {fileID: 6436524629243998825}
+  m_Layer: 11
   m_Name: Catapult
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37,6 +89,7 @@ Transform:
   - {fileID: 451298219339841506}
   - {fileID: 7475169172439016108}
   - {fileID: 3867968203954009165}
+  - {fileID: 76322960}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -73,6 +126,30 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5740605852029061573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 59765300447578355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8c7ba7e9c7d84e44b60c40dfd4d5241, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6436524629243998825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 59765300447578355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd91d6fb622c32048a91a5d39f975304, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &211158512136411982
 GameObject:
   m_ObjectHideFlags: 0
@@ -83,7 +160,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7071040913592963372}
   - component: {fileID: 4978599858424300406}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Tyre3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,7 +221,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7475169172439016108}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: COM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -176,7 +253,7 @@ GameObject:
   - component: {fileID: 4538578853890378863}
   - component: {fileID: 7221142501347314834}
   - component: {fileID: 6756409677169157678}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -249,7 +326,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6917239316113419617}
   - component: {fileID: 5381350091602973911}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Tyre2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -312,7 +389,7 @@ GameObject:
   - component: {fileID: 3115815651730609167}
   - component: {fileID: 1552781916414444540}
   - component: {fileID: 5385303084570567915}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CannonTyre4.001 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -392,7 +469,7 @@ GameObject:
   - component: {fileID: 9025401074965668847}
   - component: {fileID: 6877949465882830950}
   - component: {fileID: 5864738057772004200}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Hud
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -489,7 +566,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1390578905404324071}
   - component: {fileID: 6463007236554319402}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Tyre1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -551,7 +628,7 @@ GameObject:
   m_Component:
   - component: {fileID: 451298219339841506}
   - component: {fileID: 520039551473982960}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Tyre4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -614,7 +691,7 @@ GameObject:
   - component: {fileID: 4586914043947180873}
   - component: {fileID: 7346854708034951166}
   - component: {fileID: 1062368672665557}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -687,7 +764,7 @@ GameObject:
   - component: {fileID: 2030387191100221924}
   - component: {fileID: 4038959898233177158}
   - component: {fileID: 4320607803684268148}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CannonTyre4.001 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -766,7 +843,7 @@ GameObject:
   - component: {fileID: 6457424276266708614}
   - component: {fileID: 532086203294514733}
   - component: {fileID: 4436024314327605454}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CannonTyre4.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -845,7 +922,7 @@ GameObject:
   - component: {fileID: 1867297315890322131}
   - component: {fileID: 3293047753030761627}
   - component: {fileID: 4412438021899623478}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CannonTyre4.001 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -925,7 +1002,7 @@ GameObject:
   - component: {fileID: 8106065524620691931}
   - component: {fileID: 7723856314352027810}
   - component: {fileID: 4949670025704234964}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CatapultChassis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1018,7 +1095,7 @@ GameObject:
   - component: {fileID: 6896918650401996319}
   - component: {fileID: 5254662488356987080}
   - component: {fileID: 6188533952578472148}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CatapultArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
