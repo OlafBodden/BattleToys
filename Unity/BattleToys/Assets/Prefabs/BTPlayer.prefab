@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &963194228
 Transform:
   m_ObjectHideFlags: 0
@@ -500,6 +500,8 @@ MonoBehaviour:
   myCannon: {fileID: 0}
   debugText: {fileID: 0}
   chatCanvas: {fileID: 3845723899057284800}
+  playerState: 0
+  currentPlaceable: {fileID: 0}
 --- !u!114 &5527148755779907200
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -540,7 +542,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1733159077816793812}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 324a6fa29c165974caeef7d7c21321c1, type: 3}
   m_Name: 

@@ -133,6 +133,8 @@ public class Placeable : MonoBehaviour
 
     public void CanclePlacement()
     {
-        Destroy(this.gameObject);
+        GetComponent<BTObject>().Destroy();
+
+        
     }
 }

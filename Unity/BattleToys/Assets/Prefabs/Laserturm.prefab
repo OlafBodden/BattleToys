@@ -95,6 +95,8 @@ GameObject:
   - component: {fileID: 3811460269667379961}
   - component: {fileID: 4002479959296903351}
   - component: {fileID: 3115687073386931480}
+  - component: {fileID: -3265645098840196384}
+  - component: {fileID: 4298160740013482473}
   m_Layer: 10
   m_Name: Laserturm
   m_TagString: Untagged
@@ -218,6 +220,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd91d6fb622c32048a91a5d39f975304, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-3265645098840196384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1419606050101419524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8122439a0bdafb743be009bca75431fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  btObjectType: 2
+--- !u!208 &4298160740013482473
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1419606050101419524}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 2.45, y: 4.35, z: 3.38}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 3.91, z: 0.87}
+  m_TimeToStationary: 0.5
 --- !u!1 &3270659687081101883
 GameObject:
   m_ObjectHideFlags: 0

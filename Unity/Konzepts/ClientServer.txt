@@ -1,0 +1,20 @@
+Aufgaben Client vs. Server
+
+Client
+- Benutzereingabe
+- Ausführen von Client-Rpc (Bewegen von Objekten usw.)
+
+Server
+- Nimmt Client-Anfragen entgegen
+- Bewegung aller Objekte
+- Instatiating aller Objekte
+-
+
+
+
+
+BTPlayer (Client)
+
+
+
+BTPlayer (Server)

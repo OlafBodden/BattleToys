@@ -391,7 +391,7 @@ Projector:
   m_FieldOfView: 60
   m_AspectRatio: 1
   m_Orthographic: 1
-  m_OrthographicSize: 4.34
+  m_OrthographicSize: 3.7
   m_Material: {fileID: 2100000, guid: abe024112baebd145880816d23495b4b, type: 2}
   m_IgnoreLayers:
     serializedVersion: 2
@@ -502,7 +502,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8251509269223666017}
   - component: {fileID: 4960827340180259699}
-  - component: {fileID: 4960827340180259692}
   - component: {fileID: 4960827340180259693}
   - component: {fileID: -7640789090470197677}
   - component: {fileID: 3908229046308989694}
@@ -510,6 +509,7 @@ GameObject:
   - component: {fileID: 1847226495}
   - component: {fileID: 1847226496}
   - component: {fileID: -1114224833353348663}
+  - component: {fileID: 6453278289316315606}
   m_Layer: 11
   m_Name: Cannon
   m_TagString: Untagged
@@ -555,36 +555,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4960827340180259692
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4960827340180259698}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8122439a0bdafb743be009bca75431fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  centerOfMass: {fileID: 8806451225786770650}
-  cannonBallPrefab: {fileID: 582927963240110583, guid: a4d88710ea1d1e3459b7bd3c210ff385,
-    type: 3}
-  shootPosition: {fileID: 5991844780058367878}
-  FireringMechanism: {fileID: 3693080925907938117}
-  shootPower: 35.2
-  FireringMeachnismMaxZ: -1.74
-  FireringMeachnismMinZ: -2.55
-  cannonPipe: {fileID: 4676156536045224026}
-  shootPowerPanel: {fileID: 4420371119354296010}
-  currentPower: 0
-  powerIncreaseRate: 200
-  rotatePipeSpeed: 10
-  prefabExplosion: {fileID: 176706, guid: 92482c14dfe8a8f43ace5e18460a47c7, type: 3}
-  prefabShootEffect: {fileID: 191916, guid: dec1e5a6a484ea44485b918f2c2f2315, type: 3}
-  cannonRotY: 0
 --- !u!95 &4960827340180259693
 Animator:
   serializedVersion: 3
@@ -685,12 +655,12 @@ NavMeshAgent:
   m_GameObject: {fileID: 4960827340180259698}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
+  m_Radius: 2.47
+  m_Speed: 7
+  m_Acceleration: 20
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -698,6 +668,20 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &6453278289316315606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4960827340180259698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8122439a0bdafb743be009bca75431fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
 --- !u!1 &5000509427182174648
 GameObject:
   m_ObjectHideFlags: 0

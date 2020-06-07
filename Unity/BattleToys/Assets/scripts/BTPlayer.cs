@@ -12,13 +12,10 @@ public class BTPlayer : NetworkBehaviour
 
     public Camera myCam;
 
-    public GameObject cannonPrefab;
+    //public GameObject cannonPrefab;
 
     [SerializeField]
     BTTeam myTeam=BTTeam.nothing;
-
-    [SerializeField]
-    Cannon myCannon;
 
     public TextMeshProUGUI debugText;
 
@@ -32,6 +29,11 @@ public class BTPlayer : NetworkBehaviour
 
     Selectable selectedUnit;
 
+    GameObject goToSpawn;
+
+
+
+
     void Awake() 
     {
         if (Camera.main) Camera.main.gameObject.SetActive(false);
@@ -42,7 +44,7 @@ public class BTPlayer : NetworkBehaviour
     {
         if (!base.hasAuthority) return;
 
-        
+        BTLocalGameManager.Instance.localPlayer=this;
 
         GetTeam();
 
@@ -52,6 +54,9 @@ public class BTPlayer : NetworkBehaviour
         this.gameObject.name="Player_ " + myTeam.ToString();
 
         myCam.gameObject.SetActive(true);
+
+        BTPlayerCameraMovement camMovement=GetComponent<BTPlayerCameraMovement>();
+        camMovement.enabled=true;
 
         //chatCanvas=this.gameObject.GetComponentInChildren<Canvas>();
 
@@ -68,23 +73,23 @@ public class BTPlayer : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!base.hasAuthority) return;
+        if (!base.hasAuthority) return; //Wenn nicht localPlayer dann exit
 
-
+        //Wenn Shop Objekt bereits ausgwählt und am plazieren
         if (playerState==PlayerState.PlacingShopObject)
         {
             if (currentPlaceable!=null)
             {
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(0))    //Wenn während dem Platzieren ein Mausklick...
                 {
-                    GameObject go=currentPlaceable.PlaceObject();
+                    GameObject go=currentPlaceable.PlaceObject();   //Plaziere Objekt
                     if (go)
                     {
                         ShopItemPlaced(go);
                     }
                 }
 
-                if (Input.GetMouseButtonDown(1))
+                if (Input.GetMouseButtonDown(1))    //Cancel Placement
                 {
                     currentPlaceable.CanclePlacement();
                     currentPlaceable=null;
@@ -93,9 +98,9 @@ public class BTPlayer : NetworkBehaviour
             }
         }
 
-        if (playerState==PlayerState.Shopping)
+        else if (playerState==PlayerState.Shopping)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0))    
             {
                 //Did we click on an unit?
                 Ray ray = myCam.ScreenPointToRay (Input.mousePosition);
@@ -138,55 +143,12 @@ public class BTPlayer : NetworkBehaviour
                 }
             }
         }
-
-        // RotateCannonPipe();
-
-        // RotateCannon();
-
-        // if (Input.GetKeyDown(KeyCode.Space))
-        // {
-        //     myCannon.ResetPower();
-        // }
-
-        // if (Input.GetKey(KeyCode.Space))
-        // {
-        //     myCannon.IncreasePower();
-        // }
-
-        
-
-
-        // if (Input.GetKeyUp(KeyCode.Space))
-        // {
-        //     myCannon.Fire();
-        //     //CmdFireCannon(myCannon.currentPower/100f);
-        // }
-
     }
-
-    // [Client]
-    // void RotateCannonPipe()
-    // {
-    //     int rotX=(Input.GetKey(KeyCode.UpArrow)==true ? 1 : 0)  - (Input.GetKey(KeyCode.DownArrow)==true? 1 : 0) ;
-
-    //     myCannon.RotateCannonPipe(rotX);
-    // }
-
-    // [Client]
-    // void RotateCannon()
-    // {
-    //     int rotY=(Input.GetKey(KeyCode.RightArrow)==true ? 1 : 0)  - (Input.GetKey(KeyCode.LeftArrow)==true? 1 : 0) ;
-
-    //     myCannon.RotateCannon(rotY);
-    // }
-
 
 
     [Client]
     void GetTeam()
     {
-        
-
         Transform spawnPointParent;
 
         spawnPointParent=GameObject.Find("SpawnPoints").transform;
@@ -199,70 +161,20 @@ public class BTPlayer : NetworkBehaviour
                 if (spawnPointParent.GetChild(i).name.Equals("SpawnpointRed")) myTeam=BTTeam.red;
             }
         }
-
-
     }
 
-    // [Client]
-    // void CreateCannon()
-    // {
-    //     Transform t=null; 
-    //     if (myTeam==BTTeam.red)
-    //     {
-    //         t=GameObject.Find("CannonSpawnPointRed").transform;
-    //     } else if (myTeam==BTTeam.blue)
-    //     {
-    //         t=GameObject.Find("CannonSpawnPointBlue").transform;
-    //     }
-
-    //     CmdSpawnCannon(t.position,t.rotation);
-
-    //     //go.name="Cannon_" + myTeam.ToString();
-
-    //     //myCannon=go.GetComponent<Cannon>();
-
-    //     // foreach(Cannon c in Transform.FindObjectsOfType<Cannon>())
-    //     // {
-    //     //     if (c.hasAuthority)
-    //     //     {
-    //     //         myCannon=c;
-    //     //     }
-    //     // }
-    // }
-
-    // [Command]
-    // void CmdSpawnCannon(Vector3 pos, Quaternion rot)
-    // {
-
-    //     //Respawn to get Authority
-    //     //GameObject newCannon=GameObject.Instantiate(cannonPrefab,pos,rot);
-    //     //newCannon.name="Cannon_" + myTeam.ToString();
-
-    //     GameObject newCannon=GameObject.Instantiate(cannonPrefab,pos,rot);
-    //     newCannon.name="Cannon_" + myTeam.ToString();
-
-    //     NetworkServer.Spawn(newCannon,base.connectionToClient);
-
- 
-    //     // if (myCannon!=null)
-    //     // {
-    //     //     myCannon.GetComponent<NetworkIdentity>().AssignClientAuthority(base.connectionToClient);
-    //     // }
-
-    // }
-
-    // public void SetCannon(Cannon cannon)
-    // {
-    //     myCannon=cannon;
-    // }
-
     ///Called by ShopItemSlot, if Player clicked on item
+    [Client]
     public void InstantiateShopItem(GameObject prefab)
     {
-        GameObject go=GameObject.Instantiate(prefab, this.transform.position, this.transform.rotation);
+        //CmdInstantiateCannon(this.transform.position, this.transform.rotation);
+        BTObjectType type=prefab.GetComponent<BTObject>().btObjectType;
+        CmdInstantiateBTObject(type, this.transform.position, this.transform.rotation);
+    }
 
+    public void PlayerAuthorizedBTObjectWasSpawned(GameObject go)
+    {
         currentPlaceable=go.AddComponent<Placeable>();
-
         currentPlaceable.Init(this);
 
         //We are now in Placing-Mode
@@ -270,25 +182,35 @@ public class BTPlayer : NetworkBehaviour
 
     }
 
+    [Client]
     public void ShopItemPlaced(GameObject placedObject)
     {
-        
+        Debug.Log("ShopItemPlaced1 " + placedObject.name);
+
         currentPlaceable=null;
 
         //Go on shopping
         playerState=PlayerState.Shopping;
-
-        //if (!base.isServer)
-        //{
-            CmdInstantiateShopItem(placedObject);
-
-        //}
+        Debug.Log("ShopItemPlaced2 " + placedObject.name);
     }
 
     [Command]
-    void CmdInstantiateShopItem(GameObject go)
+    void CmdInstantiateBTObject(BTObjectType type, Vector3 pos, Quaternion rot)
     {
-        NetworkServer.Spawn(go,base.connectionToClient);
+
+        foreach (GameObject go in NetworkManager.singleton.spawnPrefabs)
+        {
+            if (go.GetComponent<BTObject>()?.btObjectType==type)
+            {
+                goToSpawn=GameObject.Instantiate(go, pos, rot);
+
+                NetworkServer.Spawn(goToSpawn,base.connectionToClient);
+            
+            }
+
+        }
+
+
 
     }
 
@@ -325,3 +247,5 @@ public enum PlayerState
 
     InMatch
 }
+
+

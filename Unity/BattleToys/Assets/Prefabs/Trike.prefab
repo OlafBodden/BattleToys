@@ -579,11 +579,12 @@ GameObject:
   m_Component:
   - component: {fileID: 8792891145116073234}
   - component: {fileID: 2281713897407897514}
-  - component: {fileID: 3446195285979038687}
   - component: {fileID: 7109318185810922881}
   - component: {fileID: 4538241204821930991}
   - component: {fileID: 5928744988214694611}
   - component: {fileID: 6054383477837114416}
+  - component: {fileID: 3608650025859424298}
+  - component: {fileID: 1361075850285136983}
   m_Layer: 11
   m_Name: Trike
   m_TagString: Untagged
@@ -629,21 +630,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3446195285979038687
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5502772229358014209}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2579b599c8bee7e43b053abe9d0bebf2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  centerOfMass: {fileID: 8724928280393362302}
 --- !u!114 &7109318185810922881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -696,6 +682,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2c48b5ad246b9842b505509f8bd6df6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+--- !u!114 &3608650025859424298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5502772229358014209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8122439a0bdafb743be009bca75431fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  btObjectType: 3
+--- !u!195 &1361075850285136983
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5502772229358014209}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 4.6
+  m_Speed: 12
+  m_Acceleration: 12
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0.1
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &6670807702938463874
 GameObject:
   m_ObjectHideFlags: 0
