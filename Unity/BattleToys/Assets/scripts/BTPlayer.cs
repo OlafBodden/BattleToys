@@ -17,7 +17,9 @@ public class BTPlayer : NetworkBehaviour
     [SerializeField]
     BTTeam myTeam=BTTeam.nothing;
 
-    public TextMeshProUGUI debugText;
+    public BTTeam Team {get { return myTeam;}}
+
+    
 
     public Canvas chatCanvas;
 
@@ -30,6 +32,11 @@ public class BTPlayer : NetworkBehaviour
     Selectable selectedUnit;
 
     GameObject goToSpawn;
+
+    static int numberPlayersReadyForMatch;
+
+    public int NumberPlayersReadyForMatch {get { return numberPlayersReadyForMatch;}}
+
 
 
 
@@ -48,7 +55,7 @@ public class BTPlayer : NetworkBehaviour
 
         GetTeam();
 
-        OpenShop();
+        BTLocalGameManager.Instance.OpenShop();
         playerState=PlayerState.Shopping;
         
         this.gameObject.name="Player_ " + myTeam.ToString();
@@ -62,12 +69,37 @@ public class BTPlayer : NetworkBehaviour
 
         chatCanvas.gameObject.SetActive(true);
 
-        debugText=GameObject.Find("TextDebug").GetComponent<TextMeshProUGUI>();
+        BTLocalGameManager.Instance.RefreshNetworkInfo();
 
-        debugText.text="Ich bin " + myTeam.ToString();
-        debugText.text+="\n meine Camera: " + myCam.name;
+        //debugText=GameObject.Find("TextDebug").GetComponent<TextMeshProUGUI>();
+
+        //debugText.text="Ich bin " + myTeam.ToString();
+        //debugText.text+="\n meine Camera: " + myCam.name;
 
         
+    }
+
+    public override void  OnStartServer()
+    {
+        base.OnStartServer();
+        
+        //if (BTLocalGameManager.Instance.localPlayer==null) BTLocalGameManager.Instance.localPlayer=this;
+        BTLocalGameManager.Instance.RefreshNetworkInfo();
+
+
+        // if (base.isServer)
+        // {
+        //     debugText=GameObject.Find("TextDebug").GetComponent<TextMeshProUGUI>();
+
+        //     debugText.text="Ich bin Server. Team: " + myTeam.ToString();
+        //     debugText.text+="\n Players Connected: " + NetworkServer.connections.Count;
+        // } else
+        // {
+        //     debugText=GameObject.Find("TextDebug").GetComponent<TextMeshProUGUI>();
+        //     debugText.text="Ich bin Client. Team: " + myTeam.ToString();
+
+        // }
+
     }
 
     // Update is called once per frame
@@ -214,16 +246,78 @@ public class BTPlayer : NetworkBehaviour
 
     }
 
-    void OpenShop()
-    {
-        shop=(Shop)Transform.FindObjectOfType<Shop>();
 
-        shop.OpenShop(this);
-    }
 
     public bool IsShopping()
     {
         return (playerState==PlayerState.Shopping);
+    }
+
+    public void FinishedShopping()
+    {
+        if (!base.hasAuthority) return; 
+
+
+        if (this.playerState!=PlayerState.ReadyForMatch)
+        {
+            this.playerState=PlayerState.ReadyForMatch;
+            CmdPlayerIsReadyForMatch();
+            
+        }
+
+
+
+    }
+
+    [Command]
+    void CmdPlayerIsReadyForMatch()
+    {
+        numberPlayersReadyForMatch++;
+
+        Debug.Log("Server: PlayerReady: " + numberPlayersReadyForMatch + "/" + NetworkServer.connections.Count);
+        RpcOneMorePlayerIsReadyForMatch(numberPlayersReadyForMatch);
+
+        if (numberPlayersReadyForMatch>=NetworkServer.connections.Count)
+        {
+            //Start Match       
+            //ToDo: Hide Vorhang
+
+            RpcStartMatch();
+        }
+    }
+
+    [ClientRpc]
+    void RpcOneMorePlayerIsReadyForMatch(int value)
+    {
+
+        numberPlayersReadyForMatch=value;
+        BTLocalGameManager.Instance.RefreshNetworkInfo();
+
+    }
+
+    [ClientRpc]
+    void RpcStartMatch()
+    {
+        BTLocalGameManager.Instance.StartMatchCountdown();
+    }
+
+    [Client]
+    public void StartMatch()
+    {
+        this.playerState=PlayerState.InMatch;
+    }
+
+
+    public int GetNetworkConnectionCount()
+    {
+        return NetworkServer.connections.Count;
+    }
+
+    public string IsClientOrServer()
+    {
+        if (base.isServer) { return "Server"; }
+        else if (base.isClient) { return "Client"; }
+        else { return "Nothing"; }
     }
 }
 

@@ -46,4 +46,17 @@ public class Shop : MonoBehaviour
         }
 
     }
+
+    public void PlayerFinishedShopping()
+    {
+        player.FinishedShopping();
+
+    }
+
+    public void Hide()
+    {
+        this.gameObject.SetActive(false);
+
+
+    }
 }

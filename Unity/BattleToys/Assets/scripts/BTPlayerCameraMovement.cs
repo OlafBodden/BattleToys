@@ -31,7 +31,12 @@ public class BTPlayerCameraMovement : MonoBehaviour
 
     [SerializeField]  float maxZoomDistance;
 
+    Quaternion initialRotation;
+    Vector3 initalPosition;
 
+    Vector3 initialCameraLocalPosition;
+
+    public bool IsActive {get;set;} = true;
 
     // Start is called before the first frame update
     void Start()
@@ -40,13 +45,17 @@ public class BTPlayerCameraMovement : MonoBehaviour
         newRotation=transform.rotation;
         newZoom=cameraTransform.localPosition;
 
+        initialRotation=transform.rotation;
+        initalPosition=transform.position;
+        initialCameraLocalPosition=cameraTransform.localPosition;
+
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        HandleMovementInput();
+        if (IsActive) HandleMovementInput();
     }
 
     void HandleMovementInput()
@@ -123,6 +132,19 @@ public class BTPlayerCameraMovement : MonoBehaviour
         else if(sm < (double)min * (double)min) return v.normalized * min;
         return v;
     }
+
+    public void ResetPositionAndRotation()
+    {
+        
+        transform.rotation=initialRotation;
+        transform.position=initalPosition;
+        cameraTransform.localPosition=initialCameraLocalPosition;
+
+        newPosition=transform.position;
+        newRotation=transform.rotation;
+        newZoom=cameraTransform.localPosition;
+    }
+
 
 
 }
