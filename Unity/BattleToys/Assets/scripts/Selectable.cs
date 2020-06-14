@@ -22,11 +22,17 @@ public class Selectable : MonoBehaviour
 
     public void Select()
     {
-        markingProjector.enabled=true;
+        if (markingProjector) markingProjector.enabled=true;
     }
 
     public void DeSelect()
     {
-        markingProjector.enabled=false;
+        if (markingProjector) markingProjector.enabled=false;
+    }
+
+    public bool IsMe(BTPlayer player)
+    {
+        if (player==null) return false;
+        return player==this.player;
     }
 }

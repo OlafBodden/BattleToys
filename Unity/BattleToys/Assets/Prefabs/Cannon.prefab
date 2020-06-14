@@ -384,7 +384,7 @@ Projector:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3063456064440383004}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_NearClipPlane: 0.1
   m_FarClipPlane: 3.6
@@ -510,6 +510,7 @@ GameObject:
   - component: {fileID: 1847226496}
   - component: {fileID: -1114224833353348663}
   - component: {fileID: 6453278289316315606}
+  - component: {fileID: 1541527142756631576}
   m_Layer: 11
   m_Name: Cannon
   m_TagString: Untagged
@@ -682,6 +683,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  btObjectType: 0
+--- !u!114 &1541527142756631576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4960827340180259698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca247672d6e6b0d45a458608c2a496c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5000509427182174648
 GameObject:
   m_ObjectHideFlags: 0

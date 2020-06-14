@@ -38,7 +38,7 @@ Projector:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 589005625}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_NearClipPlane: 0.1
   m_FarClipPlane: 2.42
@@ -585,6 +585,7 @@ GameObject:
   - component: {fileID: 6054383477837114416}
   - component: {fileID: 3608650025859424298}
   - component: {fileID: 1361075850285136983}
+  - component: {fileID: 7453633531864224979}
   m_Layer: 11
   m_Name: Trike
   m_TagString: Untagged
@@ -718,9 +719,21 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0
+  m_BaseOffset: -0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &7453633531864224979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5502772229358014209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca247672d6e6b0d45a458608c2a496c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6670807702938463874
 GameObject:
   m_ObjectHideFlags: 0

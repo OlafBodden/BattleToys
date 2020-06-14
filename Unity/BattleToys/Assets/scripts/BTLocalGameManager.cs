@@ -49,12 +49,12 @@ public class BTLocalGameManager : MonoBehaviour
         PanelBackgroundNetworkHUD.SetActive(false);
     }
 
-    public void ShowShop()
+    private void ShowShop()
     {
         shop.SetActive(true);
     }
 
-    public void HideShop()
+    private void HideShop()
     {
         shop.SetActive(false);
     }
@@ -88,7 +88,7 @@ public class BTLocalGameManager : MonoBehaviour
 
         Invoke("StartMatch",6f);
 
-
+        EventManager.TriggerEvent(EventEnum.MatchCountdownStarted);
         
     }
 
@@ -102,6 +102,7 @@ public class BTLocalGameManager : MonoBehaviour
         courtain.RaiseCourtain();
         localPlayer.GetComponent<BTPlayerCameraMovement>().IsActive=true;
         localPlayer.StartMatch();
+        EventManager.TriggerEvent(EventEnum.MatchStarted);
 
     }
     public void OpenShop()
@@ -109,6 +110,8 @@ public class BTLocalGameManager : MonoBehaviour
         ShowShop();
 
         shop.GetComponent<Shop>().OpenShop(localPlayer);
+
+        EventManager.TriggerEvent(EventEnum.StartShopping);
     }
 
 }

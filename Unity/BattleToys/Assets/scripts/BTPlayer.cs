@@ -29,7 +29,16 @@ public class BTPlayer : NetworkBehaviour
 
     [SerializeField] Placeable currentPlaceable=null;
 
-    Selectable selectedUnit;
+    Selectable lastSeleectedUnit=null;
+    Selectable selectedUnit=null;
+
+    GameObject hoveredGameObject;
+    Selectable hoveredSelectable;
+    BTObject hoveredBTObject;
+
+    GameObject lastHoveredGameObject;
+    Selectable lastHoveredSelectable;
+    BTObject lastHoveredBTObject;
 
     GameObject goToSpawn;
 
@@ -107,74 +116,183 @@ public class BTPlayer : NetworkBehaviour
     {
         if (!base.hasAuthority) return; //Wenn nicht localPlayer dann exit
 
+        lastSeleectedUnit=selectedUnit;
+
+        if (Input.GetKey(KeyCode.Escape)) Application.Quit();
+
         //Wenn Shop Objekt bereits ausgwählt und am plazieren
-        if (playerState==PlayerState.PlacingShopObject)
+        if (playerState==PlayerState.PlacingShopObject) UpdateInPlacingMode();
+        else if (playerState==PlayerState.Shopping) 
         {
-            if (currentPlaceable!=null)
-            {
-                if (Input.GetMouseButtonDown(0))    //Wenn während dem Platzieren ein Mausklick...
-                {
-                    GameObject go=currentPlaceable.PlaceObject();   //Plaziere Objekt
-                    if (go)
-                    {
-                        ShopItemPlaced(go);
-                    }
-                }
+            Selecting();
+            Moving();
+        }
 
-                if (Input.GetMouseButtonDown(1))    //Cancel Placement
+        if (playerState==PlayerState.InMatch)
+        {
+            Selecting();
+            Moving();
+            Attacking();
+
+        }
+
+
+        
+
+        //Handle Hover
+        GetHoveredObject();
+    }
+
+    void UpdateInPlacingMode()
+    {
+        if (currentPlaceable!=null)
+        {
+            if (Input.GetMouseButtonDown(0))    //Wenn während dem Platzieren ein Mausklick...
+            {
+                GameObject go=currentPlaceable.PlaceObject();   //Plaziere Objekt
+                if (go)
                 {
-                    currentPlaceable.CanclePlacement();
-                    currentPlaceable=null;
-                    playerState=PlayerState.Shopping;   //Back to shopping
+                    ShopItemPlaced(go);
+                }
+            }
+
+            if (Input.GetMouseButtonDown(1))    //Cancel Placement
+            {
+                currentPlaceable.CanclePlacement();
+                currentPlaceable=null;
+                playerState=PlayerState.Shopping;   //Back to shopping
+                EventManager.TriggerEvent(EventEnum.CancelPlacingBTObject);
+            }
+        }
+    }
+
+    void Selecting()
+    {
+        
+        if (Input.GetMouseButtonDown(0))    
+        {
+            //Did we click on an unit?
+            Ray ray = myCam.ScreenPointToRay (Input.mousePosition);
+            RaycastHit hit;
+            int layerMaskObstacle=LayerMask.GetMask(new string[]{"Units","Buildings"});
+            if (Physics.Raycast(ray, out hit,  100, layerMaskObstacle))
+            {
+                Selectable newSelection= hit.rigidbody.gameObject.GetComponent<Selectable>();
+
+                if (newSelection!=selectedUnit)
+                {
+                    if (selectedUnit) 
+                    {
+                        selectedUnit.DeSelect();
+                        selectedUnit=null;
+                    }
+
+                    selectedUnit=newSelection;
+
+                    if (selectedUnit) 
+                    {
+                        selectedUnit.Select();
+                    } 
+                }
+            } else
+            {
+                if (selectedUnit) 
+                {
+                    selectedUnit.DeSelect();
+                    selectedUnit=null;
                 }
             }
         }
+    }
 
-        else if (playerState==PlayerState.Shopping)
+    void Moving()
+    {
+
+        if (Input.GetMouseButtonDown(1))
         {
-            if (Input.GetMouseButtonDown(0))    
+            Ray ray = myCam.ScreenPointToRay (Input.mousePosition);
+            RaycastHit hit;
+            int layerMaskFloor=LayerMask.GetMask(new string[]{"Floor"});
+            if (Physics.Raycast(ray, out hit,  100, layerMaskFloor))
             {
-                //Did we click on an unit?
-                Ray ray = myCam.ScreenPointToRay (Input.mousePosition);
-                RaycastHit hit;
-                int layerMaskObstacle=LayerMask.GetMask(new string[]{"Units","Buildings"});
-                if (Physics.Raycast(ray, out hit,  100, layerMaskObstacle))
+                if (selectedUnit)
                 {
-                    Selectable newSelection= hit.rigidbody.gameObject.GetComponent<Selectable>();
+                    Moveable moveable=selectedUnit.gameObject.GetComponent<Moveable>();
 
-                    if (newSelection!=selectedUnit)
+                    if (moveable)
                     {
-                        if (selectedUnit) selectedUnit.DeSelect();
-
-                        selectedUnit=newSelection;
-
-                        if (selectedUnit) selectedUnit.Select();
-                    }
-                } else
-                {
-                    if (selectedUnit) selectedUnit.DeSelect();
-                }
-            }
-
-            if (Input.GetMouseButtonDown(1))
-            {
-                Ray ray = myCam.ScreenPointToRay (Input.mousePosition);
-                RaycastHit hit;
-                int layerMaskFloor=LayerMask.GetMask(new string[]{"Floor"});
-                if (Physics.Raycast(ray, out hit,  100, layerMaskFloor))
-                {
-                    if (selectedUnit)
-                    {
-                        Moveable moveable=selectedUnit.gameObject.GetComponent<Moveable>();
-
-                        if (moveable)
-                        {
-                            moveable.MoveToDestination(hit.point);
-                        }
+                        moveable.MoveToDestination(hit.point);
                     }
                 }
             }
+        }      
+    }
+
+    void Attacking()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            Ray ray = myCam.ScreenPointToRay (Input.mousePosition);
+            RaycastHit hit;
+            int layerMaskFloor=LayerMask.GetMask(new string[]{"Buildings","Units"});
+            if (Physics.Raycast(ray, out hit,  100, layerMaskFloor))
+            {
+                if (selectedUnit)
+                {
+                    Shootable shootable=selectedUnit.gameObject.GetComponent<Shootable>();
+
+                    if (shootable)
+                    {
+                        //ToDo: Do something
+                    }
+                }
+            }
+        } 
+    }
+
+    [Client]
+    void GetHoveredObject()
+    {
+        Ray ray = myCam.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        lastHoveredBTObject=hoveredBTObject;
+        lastHoveredGameObject=hoveredGameObject;
+        lastHoveredSelectable=hoveredSelectable;
+
+        if(Physics.Raycast(ray, out hit))
+        {
+            hoveredGameObject=hit.collider.gameObject;
+            
+            hoveredBTObject=hoveredGameObject.GetComponent<BTObject>();
+            if (hoveredBTObject==null) hoveredBTObject=hoveredGameObject.GetComponentInParent<BTObject>();
+
+            hoveredSelectable=hoveredGameObject.GetComponent<Selectable>();
+            if (hoveredSelectable==null) hoveredSelectable=hoveredGameObject.GetComponentInParent<Selectable>();
+
+        } else
+        {
+            hoveredBTObject=null;
+            hoveredGameObject=null;
+            hoveredSelectable=null;
         }
+
+        if ((hoveredGameObject!=lastHoveredGameObject) || (lastSeleectedUnit!=selectedUnit))
+        {
+            if (hoveredSelectable==null && selectedUnit==null ) EventManager.TriggerEvent(EventEnum.CursorDefault);
+
+            if (hoveredSelectable==null && selectedUnit!=null && selectedUnit.IsMe(this)) EventManager.TriggerEvent(EventEnum.CursorMove);
+
+            if (hoveredSelectable!=null && selectedUnit==null && hoveredSelectable.IsMe(this)) EventManager.TriggerEvent(EventEnum.CursorSelect);
+        
+            if (hoveredSelectable!=null && selectedUnit!=null && !hoveredSelectable.IsMe(this) && selectedUnit.IsMe(this)) 
+            {
+                EventManager.TriggerEvent(EventEnum.CursorAttack);
+                Debug.Log("Attack!");
+            }
+
+        }
+
     }
 
 
@@ -217,13 +335,15 @@ public class BTPlayer : NetworkBehaviour
     [Client]
     public void ShopItemPlaced(GameObject placedObject)
     {
-        Debug.Log("ShopItemPlaced1 " + placedObject.name);
+        
 
         currentPlaceable=null;
 
         //Go on shopping
         playerState=PlayerState.Shopping;
-        Debug.Log("ShopItemPlaced2 " + placedObject.name);
+
+        EventManager.TriggerEvent(EventEnum.PlacedBTObject);
+        
     }
 
     [Command]
