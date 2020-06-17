@@ -75,6 +75,7 @@ public class Shootable : NetworkBehaviour
                 Gizmos.color = new Color(255,0,0,0.25f);    //red, when active and target is in range
             } else
             {
+                
                 Gizmos.color = new Color(0,0,255,0.25f);    //blue, when active and target out of range
             }
             

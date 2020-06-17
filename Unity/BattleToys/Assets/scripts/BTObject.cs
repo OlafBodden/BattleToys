@@ -15,6 +15,8 @@ public class BTObject : NetworkBehaviour
 
     private Selectable selectable;
 
+    private Aimable aimable;
+
     MoveAndAttackState moveAndAttackState=MoveAndAttackState.Nothing;
      
 
@@ -32,6 +34,7 @@ public class BTObject : NetworkBehaviour
         moveable=this.transform.GetComponent<Moveable>();
         shootable=this.transform.GetComponent<Shootable>();
         selectable=this.transform.GetComponent<Selectable>();
+        aimable=this.transform.GetComponent<Aimable>();
     
     }
 
@@ -44,21 +47,31 @@ public class BTObject : NetworkBehaviour
                 moveable.StopMoving();
 
                 moveAndAttackState=MoveAndAttackState.Aiming;
-            } else if (moveAndAttackState==MoveAndAttackState.Aiming)
+            }
+        } else if (moveAndAttackState==MoveAndAttackState.Aiming)
+        {
+            if (aimable==null)
             {
-                if (Aim()) 
-                {
-                    //Ziel ist anvisiert
-                    moveAndAttackState=MoveAndAttackState.Attack;
-                    shootable.Attack(enemyToShootAt, AttackLostHitable);
+                //nothing to aim
+                moveAndAttackState=MoveAndAttackState.Attack;
+                shootable.Attack(enemyToShootAt, AttackLostHitable);
+            }
+            else if (aimable.Aim(enemyToShootAt.transform.position)==true) 
+            {
+                //Ziel ist anvisiert
+               
+                shootable.Attack(enemyToShootAt, AttackLostHitable);
 
-                }
-            } else if (moveable.HasReachedDestination())
+            } 
+        } else if ( moveAndAttackState==MoveAndAttackState.Attack)
+        {
+            if (aimable.Aim(enemyToShootAt.transform.position)==false)
             {
-                //CancelMoveAndAttack();
-                              
+                shootable.CancelAttack();
+                moveAndAttackState=MoveAndAttackState.Aiming;
             }
         }
+        
 
 
     }
@@ -119,6 +132,7 @@ public class BTObject : NetworkBehaviour
 
     bool Aim()
     {
+        Debug.Log($"Aim() enemyToShootAt==null? {(enemyToShootAt==null ? 1 : 0) }");
         if (enemyToShootAt==null) return false;
 
         // to do: smooth things

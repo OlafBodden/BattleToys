@@ -511,6 +511,7 @@ GameObject:
   - component: {fileID: -1114224833353348663}
   - component: {fileID: 6453278289316315606}
   - component: {fileID: 1541527142756631576}
+  - component: {fileID: 1555879677}
   m_Layer: 11
   m_Name: Cannon
   m_TagString: Untagged
@@ -621,10 +622,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd91d6fb622c32048a91a5d39f975304, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   shotPrefab: {fileID: 582927963240110583, guid: a4d88710ea1d1e3459b7bd3c210ff385,
     type: 3}
   shootPosition: {fileID: 5991844780058367878}
   reloadTime: 2
+  shotVelocity: 20
   attackRange: 25
 --- !u!114 &1847226495
 MonoBehaviour:
@@ -701,6 +705,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca247672d6e6b0d45a458608c2a496c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1555879677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4960827340180259698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c122cbbb928d046419581fb10202cacb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  turnableBaseTransform: {fileID: 8251509269223666017}
+  nozzleTransform: {fileID: 4676156536045224026}
+  baseTurnSpeed: 100
+  aimingSpeed: 100
+  aimMode: 1
 --- !u!1 &5000509427182174648
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,6 +16,8 @@ public class Moveable : NetworkBehaviour
     Vector3 realPosition = Vector3.zero;
     [SyncVar]
     Quaternion realRotation;
+
+     
     private float updateInterval;
  
     public void Init(BTPlayer player)
@@ -61,6 +63,15 @@ public class Moveable : NetworkBehaviour
     public bool HasReachedDestination()
     {
         return agent.pathStatus==NavMeshPathStatus.PathComplete;
+    }
+
+    public bool IsInsideDestinationRange(float range)
+    {
+        if (agent==null) return true;
+        if (agent.pathStatus==NavMeshPathStatus.PathComplete) return true;
+        if (Vector3.Distance(agent.destination,this.transform.position)<=range) return true;
+
+        return false;
     }
 
     public void StopMoving()
