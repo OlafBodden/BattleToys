@@ -629,7 +629,8 @@ MonoBehaviour:
   shootPosition: {fileID: 5991844780058367878}
   reloadTime: 2
   shotVelocity: 20
-  attackRange: 25
+  attackRange: 50
+  initialShootSpeed: 25
 --- !u!114 &1847226495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -692,6 +693,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  btObjectSO: {fileID: 11400000, guid: dd4e55d1b1747cc40872bcb56b09c103, type: 2}
   btObjectType: 0
 --- !u!114 &1541527142756631576
 MonoBehaviour:
@@ -719,11 +721,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  turnableBaseTransform: {fileID: 8251509269223666017}
-  nozzleTransform: {fileID: 4676156536045224026}
-  baseTurnSpeed: 100
-  aimingSpeed: 100
-  aimMode: 1
+  horizontalTurningTransform: {fileID: 8251509269223666017}
+  verticalTurningTransform: {fileID: 4676156536045224026}
+  shootPositionTransform: {fileID: 5991844780058367878}
+  horizontalTurnSpeed: 50
+  verticalTurnSpeed: 50
+  xQuaternion: {x: 0, y: 0, z: 0}
+  aimMode: 3
 --- !u!1 &5000509427182174648
 GameObject:
   m_ObjectHideFlags: 0

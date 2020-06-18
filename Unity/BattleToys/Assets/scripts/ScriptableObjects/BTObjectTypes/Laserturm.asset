@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4803f2e9415021a4a86833776b5288c2, type: 3}
+  m_Name: Laserturm
+  m_EditorClassIdentifier: 
+  btObjectCategory: 0
+  btObjectType: 3
+  weaponSystem: {fileID: 11400000, guid: 9cc85b3bd1dc41d44983ce1cec760da8, type: 2}
+  isSelectable: 1
+  selectTargetWhenSelected: 1
+  selectBaseWhenSelected: 0
+  showMoveTargetPositionWhenSelected: 0
+  showStatsWhenSelected: 1
+  canMove: 0
+  moveType: 0
+  stopWhenInShootRange: 0
+  autoReturnToBase: 0
+  hasStartLandingPhasis: 0
+  canAim: 1
+  needHorzontalAimingBevoreAttack: 1
+  needVerticalAimingBevoreAttack: 0
+  aimType: 1
+  canShoot: 1
+  targetingMode: 2
+  canShootToLand: 1
+  canShootToAir: 1
+  needToReload: 0
+  reloadAfterSeconds: 0
+  reloadAfterEachShot: 0
+  reloadTime: 0

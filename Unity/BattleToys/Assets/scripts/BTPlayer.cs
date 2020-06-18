@@ -77,7 +77,7 @@ public class BTPlayer : NetworkBehaviour
 
         //chatCanvas=this.gameObject.GetComponentInChildren<Canvas>();
 
-        chatCanvas.gameObject.SetActive(true);
+        //chatCanvas.gameObject.SetActive(true);
 
         BTLocalGameManager.Instance.RefreshNetworkInfo();
 

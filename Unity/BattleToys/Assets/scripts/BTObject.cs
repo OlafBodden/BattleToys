@@ -8,6 +8,8 @@ using UnityEngine.UIElements;
 
 public class BTObject : NetworkBehaviour
 {
+    public BTObjectSO btObjectSO;
+
     public BTObjectType btObjectType;
 
     private Moveable moveable;
@@ -17,8 +19,9 @@ public class BTObject : NetworkBehaviour
 
     private Aimable aimable;
 
+    private Hitable hitable;
+
     MoveAndAttackState moveAndAttackState=MoveAndAttackState.Nothing;
-     
 
     Hitable enemyToShootAt;
 
@@ -35,6 +38,7 @@ public class BTObject : NetworkBehaviour
         shootable=this.transform.GetComponent<Shootable>();
         selectable=this.transform.GetComponent<Selectable>();
         aimable=this.transform.GetComponent<Aimable>();
+        hitable=this.transform.GetComponent<Hitable>();
     
     }
 
@@ -56,7 +60,7 @@ public class BTObject : NetworkBehaviour
                 moveAndAttackState=MoveAndAttackState.Attack;
                 shootable.Attack(enemyToShootAt, AttackLostHitable);
             }
-            else if (aimable.Aim(enemyToShootAt.transform.position)==true) 
+            else if (aimable.Aim(enemyToShootAt.transform.position,true, shootable.initialShootSpeed)==true) 
             {
                 //Ziel ist anvisiert
                
@@ -65,7 +69,7 @@ public class BTObject : NetworkBehaviour
             } 
         } else if ( moveAndAttackState==MoveAndAttackState.Attack)
         {
-            if (aimable.Aim(enemyToShootAt.transform.position)==false)
+            if (aimable.Aim(enemyToShootAt.transform.position,true,shootable.initialShootSpeed)==false)
             {
                 shootable.CancelAttack();
                 moveAndAttackState=MoveAndAttackState.Aiming;
@@ -176,13 +180,7 @@ public class BTObject : NetworkBehaviour
 
 }
 
-public enum BTObjectType
-{
-    Cannon
-    ,Catapult
-    ,Laserturm
-    ,Trke
-}
+
 
 
 

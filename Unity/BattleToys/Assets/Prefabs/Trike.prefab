@@ -671,6 +671,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd91d6fb622c32048a91a5d39f975304, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  shotPrefab: {fileID: 0}
+  shootPosition: {fileID: 0}
+  reloadTime: 2
+  shotVelocity: 20
   attackRange: 25
 --- !u!114 &6054383477837114416
 MonoBehaviour:
@@ -700,7 +706,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  btObjectType: 3
+  btObjectSO: {fileID: 11400000, guid: 513a25bbf75405f428db328a4772ab64, type: 2}
+  btObjectType: 2
 --- !u!195 &1361075850285136983
 NavMeshAgent:
   m_ObjectHideFlags: 0

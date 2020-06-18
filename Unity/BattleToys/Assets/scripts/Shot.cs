@@ -7,9 +7,11 @@ public class Shot : Mirror.NetworkBehaviour
 {
     // Start is called before the first frame update        public float destroyAfter = 5;
     public Rigidbody rigidBody;
-    public float maxForce = 50000;
+    //public float maxForce = 50000;
 
     public float destroyAfter = 12;
+
+    public float initialVelocity=30;
 
     [SyncVar]
     Vector3 realPosition = Vector3.zero;
@@ -46,7 +48,7 @@ public class Shot : Mirror.NetworkBehaviour
     // set velocity for server and client. this way we don't have to sync the
     // position, because both the server and the client simulate it.
     [Client]
-    public void Fire(Vector3 target)
+    public void Fire(float velocity)
     {
         rigidBody=GetComponent<Rigidbody>();
 
@@ -54,17 +56,11 @@ public class Shot : Mirror.NetworkBehaviour
         {
             rigidBody.isKinematic=false;
 
-            //float velocity = GetStartVelocity(Vector3.Distance(this.transform.position, target),this.transform.rotation.eulerAngles.x,true);
+            //Vector3 velocity=GetStartVelocity2(target,this.transform.rotation.x);
 
-            //Debug.Log($"Fire - target: {target.ToString()} velocity: {velocity.ToString()} ");
+            //For Cannonshot only
+            rigidBody.velocity=transform.forward * velocity;
 
-            Vector3 velocity=GetStartVelocity2(target,this.transform.rotation.x);
-            rigidBody.velocity=velocity;
-            //float velocity=GetStartVelocity3(25f,0,Physics.gravity.magnitude,10f);
-            
-            //float velocity=GetStartVelocity4(target,this.transform.rotation.x);
-            //Debug.Log($"Fire - Me: {this.transform.position.ToString()} target: {target.ToString()} Distance: {Vector3.Distance(this.transform.position, target).ToString()} velocity: {velocity.ToString()} ");
-            //rigidBody.velocity=this.transform.forward * velocity;
         } else
         {
             rigidBody.isKinematic=true;
@@ -107,6 +103,7 @@ public class Shot : Mirror.NetworkBehaviour
         return (velocity * velocity * Mathf.Sin(2.0f * launchAngle)) / GRAVITY; //=distance
     }
 
+/*
     //Calculate the start-velocity, to shoot a given distance at a given shoot-angle
     public static float GetStartVelocity(float distance, float launchAngle, bool degrees=false)
     {
@@ -200,5 +197,6 @@ public class Shot : Mirror.NetworkBehaviour
         //SetTurret(direction, currentAngle * Mathf.Rad2Deg);
 
     }
+    */
 
 }

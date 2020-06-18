@@ -162,5 +162,5 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   rigidBody: {fileID: 8315180344382731055}
-  maxForce: 50000
   destroyAfter: 12
+  initialVelocity: 25

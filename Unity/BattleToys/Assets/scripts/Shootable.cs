@@ -17,7 +17,9 @@ public class Shootable : NetworkBehaviour
     public float shotVelocity=20;
     float lastReloadTime=0f;
 
-    [SerializeField] float attackRange=10f;
+    public float attackRange=10f;
+
+    public float initialShootSpeed=10f;
     Hitable enemyToShootAt;
     bool isAttacking;
 
@@ -58,7 +60,7 @@ public class Shootable : NetworkBehaviour
             go.transform.rotation=shootPosition.rotation;
             Shot shot=go.GetComponent<Shot>();
 
-            shot.Fire(enemyToShootAt.transform.position);
+            shot.Fire(initialShootSpeed);//enemyToShootAt.transform.position);
 
             lastReloadTime=Time.time;
 
