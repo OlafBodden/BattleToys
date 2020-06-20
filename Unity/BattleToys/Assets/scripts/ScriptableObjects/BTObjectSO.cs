@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,31 +11,52 @@ public class BTObjectSO : ScriptableObject
 
     public WeapontTypeSO weaponSystem;
 
-    [Header("Selectable")]
-    public bool isSelectable;
-    public bool selectTargetWhenSelected;
-    public bool selectBaseWhenSelected;
-    public bool showMoveTargetPositionWhenSelected;
-    public bool showStatsWhenSelected ;
+    public SelectableStats selectableStats;
+    public MoveableStats moveableStats;
+    public AimableStats aimableStats;
+    public ShootableStats shootableStats;
+    public CaptureStats captureStats;
 
-    [Header("Moveable")]
+
+
+
+}
+
+[Serializable]
+public class MoveableStats
+{
     public bool canMove;
     public MoveType moveType;
     public bool stopWhenInShootRange;
     public bool autoReturnToBase;
 
     public bool hasStartLandingPhasis;
+}
 
+[Serializable]
+public class SelectableStats
+{
+    public bool isSelectable;
+    public bool selectTargetWhenSelected;
+    public bool selectBaseWhenSelected;
+    public bool showMoveTargetPositionWhenSelected;
+    public bool showStatsWhenSelected;
+}
 
-    [Header("Aimable")]
+[Serializable]
+public class AimableStats
+{
+    
     public bool canAim;
     public bool needHorzontalAimingBevoreAttack;
     public bool needVerticalAimingBevoreAttack;
      
     public AimType aimType;
+}
 
-
-    [Header("Shootable/Attackable")]
+[Serializable]
+public class ShootableStats
+{
     public bool canShoot;
     public TargetingMode targetingMode;
     public bool canShootToLand;
@@ -44,17 +66,17 @@ public class BTObjectSO : ScriptableObject
     public bool reloadAfterEachShot;
     public float reloadTime;
 
-    [Header("Capture")]
-    bool canCaptureChest;
-    bool canCaptureTheFlag;
-    bool canCaptureEnemyUnits;
-    bool canCaptureEnemyBuildings;
-
-
-
+    public bool reloadsAtItsBase;
 }
 
-
+[Serializable]
+public class CaptureStats
+{
+    public bool canCaptureChest;
+    public bool canCaptureTheFlag;
+    public bool canCaptureEnemyUnits;
+    public bool canCaptureEnemyBuildings;
+}
 
 public enum BTObjectCategory
 {
@@ -123,6 +145,8 @@ public enum AimType
     Nothing
     ,AimDirectlyOntoTarget
     ,AimForCannonballshot
+    ,AimForCatapultshot
+    ,AimForRocketShot
     ,AimForBombThrow
 }
 

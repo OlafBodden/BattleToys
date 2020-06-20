@@ -345,7 +345,7 @@ public class BTPlayer : NetworkBehaviour
     public void InstantiateShopItem(GameObject prefab)
     {
         //CmdInstantiateCannon(this.transform.position, this.transform.rotation);
-        BTObjectType type=prefab.GetComponent<BTObject>().btObjectType;
+        BTObjectType type=prefab.GetComponent<BTObject>().btObjectSO.btObjectType;
         CmdInstantiateBTObject(type, this.transform.position, this.transform.rotation);
     }
 
@@ -385,7 +385,7 @@ public class BTPlayer : NetworkBehaviour
 
         foreach (GameObject go in NetworkManager.singleton.spawnPrefabs)
         {
-            if (go.GetComponent<BTObject>()?.btObjectType==type)
+            if (go.GetComponent<BTObject>()?.btObjectSO?.btObjectType==type)
             {
                 goToSpawn=GameObject.Instantiate(go, pos, rot);
 

@@ -15,25 +15,35 @@ MonoBehaviour:
   btObjectCategory: 0
   btObjectType: 3
   weaponSystem: {fileID: 11400000, guid: 9cc85b3bd1dc41d44983ce1cec760da8, type: 2}
-  isSelectable: 1
-  selectTargetWhenSelected: 1
-  selectBaseWhenSelected: 0
-  showMoveTargetPositionWhenSelected: 0
-  showStatsWhenSelected: 1
-  canMove: 0
-  moveType: 0
-  stopWhenInShootRange: 0
-  autoReturnToBase: 0
-  hasStartLandingPhasis: 0
-  canAim: 1
-  needHorzontalAimingBevoreAttack: 1
-  needVerticalAimingBevoreAttack: 0
-  aimType: 1
-  canShoot: 1
-  targetingMode: 2
-  canShootToLand: 1
-  canShootToAir: 1
-  needToReload: 0
-  reloadAfterSeconds: 0
-  reloadAfterEachShot: 0
-  reloadTime: 0
+  selectableStats:
+    isSelectable: 1
+    selectTargetWhenSelected: 1
+    selectBaseWhenSelected: 0
+    showMoveTargetPositionWhenSelected: 0
+    showStatsWhenSelected: 1
+  moveableStats:
+    canMove: 0
+    moveType: 0
+    stopWhenInShootRange: 0
+    autoReturnToBase: 0
+    hasStartLandingPhasis: 0
+  aimableStats:
+    canAim: 1
+    needHorzontalAimingBevoreAttack: 1
+    needVerticalAimingBevoreAttack: 0
+    aimType: 1
+  shootableStats:
+    canShoot: 1
+    targetingMode: 2
+    canShootToLand: 1
+    canShootToAir: 0
+    needToReload: 0
+    reloadAfterSeconds: 0
+    reloadAfterEachShot: 0
+    reloadTime: 0
+    reloadsAtItsBase: 0
+  captureStats:
+    canCaptureChest: 0
+    canCaptureTheFlag: 0
+    canCaptureEnemyUnits: 0
+    canCaptureEnemyBuildings: 0

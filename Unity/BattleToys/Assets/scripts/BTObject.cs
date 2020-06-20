@@ -10,7 +10,11 @@ public class BTObject : NetworkBehaviour
 {
     public BTObjectSO btObjectSO;
 
-    public BTObjectType btObjectType;
+    [Header("Stats")]
+    public float maxHealth=100f;
+    public float costs=100f;
+
+    //public BTObjectType btObjectType;
 
     private Moveable moveable;
     private Shootable shootable;
@@ -20,6 +24,7 @@ public class BTObject : NetworkBehaviour
     private Aimable aimable;
 
     private Hitable hitable;
+
 
     MoveAndAttackState moveAndAttackState=MoveAndAttackState.Nothing;
 
@@ -39,6 +44,9 @@ public class BTObject : NetworkBehaviour
         selectable=this.transform.GetComponent<Selectable>();
         aimable=this.transform.GetComponent<Aimable>();
         hitable=this.transform.GetComponent<Hitable>();
+
+       // moveable?.Init(this);
+        hitable?.Init(this, maxHealth);
     
     }
 

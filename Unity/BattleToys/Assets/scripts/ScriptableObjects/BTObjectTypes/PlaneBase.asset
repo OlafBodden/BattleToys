@@ -10,37 +10,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4803f2e9415021a4a86833776b5288c2, type: 3}
-  m_Name: Cannon
+  m_Name: PlaneBase
   m_EditorClassIdentifier: 
   btObjectCategory: 0
-  btObjectType: 0
-  weaponSystem: {fileID: 11400000, guid: 5e4135fa9f9c8d64ea57964a4baa76fb, type: 2}
+  btObjectType: 17
+  weaponSystem: {fileID: 0}
   selectableStats:
     isSelectable: 1
-    selectTargetWhenSelected: 1
+    selectTargetWhenSelected: 0
     selectBaseWhenSelected: 0
-    showMoveTargetPositionWhenSelected: 1
-    showStatsWhenSelected: 1
+    showMoveTargetPositionWhenSelected: 0
+    showStatsWhenSelected: 0
   moveableStats:
-    canMove: 1
-    moveType: 1
-    stopWhenInShootRange: 1
+    canMove: 0
+    moveType: 0
+    stopWhenInShootRange: 0
     autoReturnToBase: 0
     hasStartLandingPhasis: 0
   aimableStats:
-    canAim: 1
-    needHorzontalAimingBevoreAttack: 1
-    needVerticalAimingBevoreAttack: 1
-    aimType: 2
+    canAim: 0
+    needHorzontalAimingBevoreAttack: 0
+    needVerticalAimingBevoreAttack: 0
+    aimType: 0
   shootableStats:
-    canShoot: 1
-    targetingMode: 1
-    canShootToLand: 1
+    canShoot: 0
+    targetingMode: 0
+    canShootToLand: 0
     canShootToAir: 0
-    needToReload: 1
+    needToReload: 0
     reloadAfterSeconds: 0
-    reloadAfterEachShot: 1
-    reloadTime: 2
+    reloadAfterEachShot: 0
+    reloadTime: 0
     reloadsAtItsBase: 0
   captureStats:
     canCaptureChest: 0
