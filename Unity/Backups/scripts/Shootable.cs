@@ -8,8 +8,6 @@ using Mirror;
 // If you want to see Hitable --> go there!
 public class Shootable : NetworkBehaviour 
 {
-    private BTPlayer player;
-    private BTObject btObject;
     public GameObject shotPrefab;
 
     public Transform shootPosition;
@@ -28,12 +26,6 @@ public class Shootable : NetworkBehaviour
     public delegate void EnemyIsGone();
 
     EnemyIsGone EnemyIsGoneDelegate;
-
-    public void Init(BTPlayer player, BTObject btObject)
-    {
-        this.player=player;
-        this.btObject=btObject;
-    }
 
     void Update()
     {

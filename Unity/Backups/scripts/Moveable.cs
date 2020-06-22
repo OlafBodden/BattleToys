@@ -8,7 +8,6 @@ public class Moveable : NetworkBehaviour
 {
 
     BTPlayer player;
-    BTObject btObject;
 
     Rigidbody _rigidbody;
     NavMeshAgent agent;
@@ -21,10 +20,9 @@ public class Moveable : NetworkBehaviour
      
     private float updateInterval;
  
-    public void Init(BTPlayer player, BTObject btObject)
+    public void Init(BTPlayer player)
     {
         this.player=player;
-        this.btObject=btObject;
         agent = GetComponent<NavMeshAgent>();
         _rigidbody=GetComponent<Rigidbody>();
         _rigidbody.isKinematic=true;

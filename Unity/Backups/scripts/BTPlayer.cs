@@ -158,25 +158,20 @@ public class BTPlayer : NetworkBehaviour
             if (Input.GetMouseButtonDown(0))    //Wenn während dem Platzieren ein Mausklick...
             {
                 GameObject go=currentPlaceable.PlaceObject();   //Plaziere Objekt
+
+                BTObject currentBTObject=go.GetComponent<BTObject>();
+                currentBTObject?.Placed();
                 
                 if (go)
                 {
-                    //Get BTObject
-                    BTObject currentBTObject=go?.GetComponent<BTObject>();
-
-                    //Tell BTObject of PlacedObject, that it is now placed
-                    currentBTObject?.OnPlaced();
-
-                    //Tell the shop, that we have placed it's object
                     ShopItemPlaced(go);
-
                 }
             }
 
-            else if (Input.GetMouseButtonDown(1))    //Cancel Placement
+            if (Input.GetMouseButtonDown(1))    //Cancel Placement
             {
-                currentPlaceable.CanclePlacement(); //Delete Object
-                currentPlaceable=null;              //We don't have a placeableObject anymore
+                currentPlaceable.CanclePlacement();
+                currentPlaceable=null;
                 playerState=PlayerState.Shopping;   //Back to shopping
                 EventManager.TriggerEvent(EventEnum.CancelPlacingBTObject);
             }
@@ -360,9 +355,8 @@ public class BTPlayer : NetworkBehaviour
 
     public void PlayerAuthorizedBTObjectWasSpawned(GameObject go)
     {
-        Debug.Log("PlayerAuthorizedBTObjectWasSpawned " + go.name);
         currentPlaceable=go.AddComponent<Placeable>();
-        currentPlaceable.Init(this, go.GetComponent<BTObject>());
+        currentPlaceable.Init(this);
 
         //We are now in Placing-Mode
         playerState=PlayerState.PlacingShopObject;

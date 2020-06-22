@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class Selectable : MonoBehaviour
 {
 
@@ -22,11 +21,6 @@ public class Selectable : MonoBehaviour
     {
         this.player=player;
 
-        Init();
-    }
-
-    void Init()
-    {
         markingProjector=GetComponentInChildren<Projector>();
         if (markingProjector==null) Debug.LogError("No Projector found");
         markingProjector.enabled=false;
@@ -35,7 +29,10 @@ public class Selectable : MonoBehaviour
 
     private void Awake() 
     {
-        Init();
+        markingProjector=GetComponentInChildren<Projector>();
+        if (markingProjector==null) Debug.LogError("No Projector found");
+        markingProjector.enabled=false;
+        //markingProjector.material.color=Color.green;
     }
 
     public void Select(BTPlayer player)

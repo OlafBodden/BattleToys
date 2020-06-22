@@ -5,9 +5,6 @@ using Mirror;
 
 public class Aimable :  NetworkBehaviour 
 {
-    private BTPlayer player;
-    private BTObject btObject;
-
     public Transform horizontalTurningTransform;
 
     //z.B. Kanonenrohr, bewegliche Laserturmspitze usw.
@@ -22,14 +19,6 @@ public class Aimable :  NetworkBehaviour
     public Vector3 xQuaternion;
 
     public AimMode aimMode=AimMode.Nothing;
-
-    public void Init(BTPlayer player, BTObject btObject)
-    {
-        this.player=player;
-        this.btObject=btObject;
-    }
-
-
 
     //return true, if we are facing the target
     //targetPosition: transform.position of target (hitable)
