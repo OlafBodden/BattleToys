@@ -160,11 +160,15 @@ public class BTPlayer : NetworkBehaviour
                 GameObject go=currentPlaceable.PlaceObject();   //Plaziere Objekt
                 if (go)
                 {
+                    //Tell the shop, that we have placed it's object
                     ShopItemPlaced(go);
+
+                    //tell the BTObject, that it is now placed
+                    go.GetComponent<BTObject>().OnPlaced();
                 }
             }
 
-            if (Input.GetMouseButtonDown(1))    //Cancel Placement
+            else if (Input.GetMouseButtonDown(1))    //Cancel Placement
             {
                 currentPlaceable.CanclePlacement();
                 currentPlaceable=null;
@@ -352,7 +356,7 @@ public class BTPlayer : NetworkBehaviour
     public void PlayerAuthorizedBTObjectWasSpawned(GameObject go)
     {
         currentPlaceable=go.AddComponent<Placeable>();
-        currentPlaceable.Init(this);
+        currentPlaceable.Init(this, go.GetComponent<BTObject>());
 
         //We are now in Placing-Mode
         playerState=PlayerState.PlacingShopObject;

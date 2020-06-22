@@ -9,7 +9,7 @@ public class Hitable : MonoBehaviour
     float currentHealth;
     float maxHealth;
 
-    // Start is called before the first frame update
+    //Called by BTObject, after it is placed
     public void Init(BTObject btObject, float maxHealth)
     {
         this.btObject=btObject;
@@ -18,12 +18,14 @@ public class Hitable : MonoBehaviour
 
     }
 
-    //Called by Shootable to check, if this hitable can still be shot (or allready exploding)
+    //Called by enemy-Shootable to check, if this hitable can still be shot (or allready exploding)
+    //Called by our BTObject to check if we are alive
     public bool IsAlive()
     {
         return (currentHealth>0); //ToDo: e.g. false, if object not destroyed, but in explode-mode
     }
 
+    //Called by enemy-Shootable to target this 
     public void SelectAsTarget()
     {
         BTObject bTObject=this.transform.GetComponent<BTObject>();
@@ -31,6 +33,7 @@ public class Hitable : MonoBehaviour
         bTObject?.SelectObjectAsTarget();
     }
 
+    //Called by enemy-Shootable to unregister it as target
     public void DeSelectAsTarget()
     {
         BTObject bTObject=this.transform.GetComponent<BTObject>();
@@ -38,6 +41,7 @@ public class Hitable : MonoBehaviour
         bTObject?.DeSelectObjectAsTarget();
     }
 
+    //Called by enemy-Shootable to apply damage
     public void TakeDamage(float amount, TakeDamageEffectTpye effectType)
     {
         currentHealth-=amount;
@@ -52,9 +56,11 @@ public class Hitable : MonoBehaviour
         }
     }
 
+
     void Die()
     {
         //ToDo: Play effect, bevor Destroy...
+   
         Destroy(this.gameObject);
     }
 
