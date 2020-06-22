@@ -31,6 +31,8 @@ public class BTLocalGameManager : MonoBehaviour
 
     public Material projectorMaterialHoveredTarget;
 
+    public List<BTObject> myBTObjects;
+
 
     static public BTLocalGameManager Instance { get { return _instance;}}
 
@@ -42,6 +44,8 @@ public class BTLocalGameManager : MonoBehaviour
         ShowNetworkUI();
 
         debugText=GameObject.Find("TextDebug").GetComponent<TextMeshProUGUI>();
+
+        myBTObjects=new List<BTObject>();
     }
 
     public void ShowNetworkUI()
@@ -92,9 +96,9 @@ public class BTLocalGameManager : MonoBehaviour
 
         Transform t = localPlayer.Team==BTTeam.red ? spawnPointCountdownRed : spawnPointCountdownBlue;
 
-        GameObject.Instantiate(prefabCountdown, t.localPosition,t.localRotation);
+        //GameObject.Instantiate(prefabCountdown, t.localPosition,t.localRotation);
 
-        Invoke("StartMatch",6f);
+        Invoke("StartMatch",1f);
 
         EventManager.TriggerEvent(EventEnum.MatchCountdownStarted);
         
@@ -107,6 +111,14 @@ public class BTLocalGameManager : MonoBehaviour
 
     void StartMatch()
     {
+        //Tell all units to to their Match-Prepare-Action, if any
+        foreach(BTObject o in myBTObjects)
+        {
+            UnitBase unitBase=o.transform.GetComponent<UnitBase>();
+            unitBase?.PrepareForMatch();
+        }
+
+
         courtain.RaiseCourtain();
         localPlayer.GetComponent<BTPlayerCameraMovement>().IsActive=true;
         localPlayer.StartMatch();
@@ -121,6 +133,18 @@ public class BTLocalGameManager : MonoBehaviour
 
         EventManager.TriggerEvent(EventEnum.StartShopping);
     }
+
+    public void RegisterAsObject(BTObject o)
+    {
+        myBTObjects.Add(o);
+    }
+
+    public void DeRegisterAsObject(BTObject o)
+    {
+        myBTObjects.Remove(o);
+    }
+
+
 
 }
 

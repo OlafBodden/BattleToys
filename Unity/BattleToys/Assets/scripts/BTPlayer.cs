@@ -158,6 +158,10 @@ public class BTPlayer : NetworkBehaviour
             if (Input.GetMouseButtonDown(0))    //Wenn während dem Platzieren ein Mausklick...
             {
                 GameObject go=currentPlaceable.PlaceObject();   //Plaziere Objekt
+
+                BTObject currentBTObject=go.GetComponent<BTObject>();
+                currentBTObject?.Placed();
+                
                 if (go)
                 {
                     ShopItemPlaced(go);
@@ -376,6 +380,9 @@ public class BTPlayer : NetworkBehaviour
         playerState=PlayerState.Shopping;
 
         EventManager.TriggerEvent(EventEnum.PlacedBTObject);
+
+        
+
         
     }
 

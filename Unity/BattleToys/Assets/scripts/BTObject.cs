@@ -33,6 +33,11 @@ public class BTObject : NetworkBehaviour
 
 
     BTPlayer player;
+
+    public delegate void IsPlaced();
+	public event IsPlaced OnPlaced;
+
+
     public override void OnStartAuthority() 
     {
         player=BTLocalGameManager.Instance.localPlayer;
@@ -88,6 +93,13 @@ public class BTObject : NetworkBehaviour
 
     }
 
+    //gets called, when Object is placed.
+    public void Placed()
+    {
+        //OnPlaced();
+        BTLocalGameManager.Instance.RegisterAsObject(this);
+    }
+
     //Used as Delegate-Function in shootable.Attack. Is invoked, when shootable lost its hitable
     //    (out of range, or destroyed)
     public void AttackLostHitable()
@@ -101,7 +113,8 @@ public class BTObject : NetworkBehaviour
 
     public void Destroy()
     {
-       CmdDestroy();     
+        BTLocalGameManager.Instance.DeRegisterAsObject(this);
+        CmdDestroy();     
 
     }
 

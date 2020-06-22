@@ -19,6 +19,16 @@ public class UnitBase : NetworkBehaviour
     {
         myAnimator=this.GetComponent<Animator>();
 
+        Close();
+    }
+
+    public void PrepareForMatch()
+    {
+        CreateUnit();
+    }
+
+    public void CreateUnit()
+    {
         if (base.hasAuthority)
         {
 
@@ -30,24 +40,28 @@ public class UnitBase : NetworkBehaviour
 
             
         }
-
-        Close();
-    }
-
-    public void Init()
-    {
-        
     }
 
     void Update()
     {
-        if (CheckIfMyUnitIsInRange())
+        if (CheckIfMyUnitIsAtBase())
+        {
+            Close();
+        }
+        else if (CheckIfMyUnitIsInRange())
         {
             Open();
         } else
         {
             Close();
         }
+    }
+
+    bool CheckIfMyUnitIsAtBase()
+    {
+        if (myUnit==null) return false;
+
+        return (Vector3.Distance(myUnit.transform.position,landingPosition.position)<0.1f);
     }
 
     bool CheckIfMyUnitIsInRange()
@@ -66,9 +80,9 @@ public class UnitBase : NetworkBehaviour
 
     void Close()
     {
-        if (openCloseState==OpenCloseState.Close) return;
+        if (openCloseState==OpenCloseState.Closed) return;
         myAnimator.SetTrigger("Close");
-        openCloseState=OpenCloseState.Close;
+        openCloseState=OpenCloseState.Closed;
     }
     
 }
@@ -77,5 +91,5 @@ public enum OpenCloseState
 {
     Nothing
     ,Open
-    ,Close
+    ,Closed
 }

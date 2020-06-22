@@ -27,6 +27,7 @@ public class Placeable : MonoBehaviour
 
     Shootable shootable;
 
+
     public void Init(BTPlayer player)
     {
         this.player=player;
@@ -58,6 +59,7 @@ public class Placeable : MonoBehaviour
         if (selectable) selectable.enabled=false;
         if (moveable) moveable.enabled=false;
         if (shootable) shootable.enabled=false;
+        
 
     }
 
