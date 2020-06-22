@@ -1,0 +1,49 @@
+BTObject Actions and returns
+
+[PlaceObject]
+MoveAlongWithMouse
+Place
+CancelPlace
+
+[GetReadyForMatch]
+GetReadyForMatch
+
+[Move/Aim/Attack]
+Move
+CancelMove
+MoveBackToBase
+
+MoveAndAttack
+CancelMoveAndAttack
+
+Attack
+CancelAttack
+
+Aim
+
+[Defenct]
+CheckForTarget 			(siehe Checks)
+
+[Die]
+Die
+EffectAndDie
+
+[TakeDamage]
+TakeDamage
+
+[AdditionalAction]
+DoAdditionalAction		(Transformer transforms, Base erstellt neues Flugzeug)
+
+
+[UI]
+ShowHealthBar
+HideHealthBar
+UpdateHealthBar			(ggf. durch Message/Action)
+ShowStats
+HideStats
+
+
+[Checks]
+TargetIsInFireRange
+AmIUnderFire			(Mindestens ein Hit in den letzen 3 Sekunden)
+
