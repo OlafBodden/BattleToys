@@ -1,7 +1,16 @@
 BTObject Actions and returns
 
+Grundsätze:
+BTObject kennt alle Behaviors
+Behaviors kennen sich nicht untereinander (d.h. ggf. müssen Move, Aim und Attack zu einem Behavior zusammengefasst werden)
+	Ausnahmen: Shootable kennt Hitable eines anderen Objekts
+	
+Behaviors kennen nach Möglichkeit BTObject nicht. Kommunikation über Delegates oder Messages
+BTObject ist das einzige NetworkBehavior
+
 [PlaceObject]
 MoveAlongWithMouse
+CheckIfPlaceable
 Place
 CancelPlace
 

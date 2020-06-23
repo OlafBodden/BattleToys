@@ -132,7 +132,7 @@ public class BTObject : NetworkBehaviour
         if (moveable)
         {
             moveable.enabled = true;
-            moveable.Init(this.player, this);
+            moveable.Init(this.player, this, this.btObjectSO.moveableStats);
         }
         if (shootable)
         {

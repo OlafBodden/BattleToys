@@ -6,14 +6,6 @@ public class Courtain : MonoBehaviour
 {
     [SerializeField] GameObject goExplosion;
 
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
- 
-    }
-
     public void RaiseCourtain()
     {
         goExplosion.SetActive(true);

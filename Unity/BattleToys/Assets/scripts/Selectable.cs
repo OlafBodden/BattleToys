@@ -6,21 +6,28 @@ using UnityEngine;
 public class Selectable : MonoBehaviour
 {
 
-    Projector markingProjector;
 
     BTPlayer player;
+    BTObject btObject;
 
-    bool isSelected=false;
+    SelectableStats selectableStats;
 
+    Projector markingProjector;
+
+
+
+    bool isSelected =false;
     bool isSelectedAsHoverUnit=false;
     bool isSelectedAsHoverTarget=false;
     bool isSelectedAsUnit=false;
     bool isSelectedAsTarget=false;
 
     // Start is called before the first frame update
-    public void Init(BTPlayer player)
+    public void Init(BTPlayer player, BTObject btObject, SelectableStats selectableStats)
     {
         this.player=player;
+        this.btObject = btObject;
+        this.selectableStats = selectableStats;
 
         Init();
     }
@@ -40,6 +47,10 @@ public class Selectable : MonoBehaviour
 
     public void Select(BTPlayer player)
     {
+        //if we are not allowed to be selected, do nothing, return.
+        if (!selectableStats.isSelectable) return;
+
+        //Check, if we are selected by local player or enemy player
         if (this.player==player) Select();
         else SelectAsTarget();
     }
@@ -58,6 +69,9 @@ public class Selectable : MonoBehaviour
 
     public void DeSelect()
     {
+        //if we are not allowed to be selected, do nothing, return.
+        if (!selectableStats.isSelectable) return;
+
         if (markingProjector) markingProjector.enabled=false;
 
         isSelected=false;
@@ -66,6 +80,9 @@ public class Selectable : MonoBehaviour
 
     public void SelectAsTarget()
     {
+        //if we are not allowed to be selected, do nothing, return.
+        if (!selectableStats.isSelectable) return;
+
         if (markingProjector) 
         {
             markingProjector.material=BTLocalGameManager.Instance.projectorMaterialSelectedTarget;
@@ -78,6 +95,9 @@ public class Selectable : MonoBehaviour
 
     public void DeSelectAsTarget()
     {
+        //if we are not allowed to be selected, do nothing, return.
+        if (!selectableStats.isSelectable) return;
+
         if (markingProjector) 
         {
             markingProjector.enabled=false;

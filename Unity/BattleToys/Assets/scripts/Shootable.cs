@@ -4,24 +4,29 @@ using UnityEngine;
 using Mirror;
 
 
-//BTObject can shoot.
+//BTObject can shoot. ToDo: Raname to Attackable
 // If you want to see Hitable --> go there!
+//ToDo: Make it a MonoBehavior instead. Let BTObject spawn shots
+
 public class Shootable : NetworkBehaviour 
 {
-    private BTPlayer player;
-    private BTObject btObject;
+    
+    private BTPlayer player;                //Reference to local Player-Object
+    private BTObject btObject;              //Reference to the BTObject, containing this instance
+    private ShootableStats shootableStats;  //Reference to the object's ShootableStats
+
+
     public GameObject shotPrefab;
 
     public Transform shootPosition;
 
-    public float reloadTime=2f;
-
-    public float shotVelocity=20;
     float lastReloadTime=0f;
 
     public float attackRange=10f;
 
     public float initialShootSpeed=10f;
+
+
     Hitable enemyToShootAt;
     bool isAttacking;
 
@@ -29,10 +34,12 @@ public class Shootable : NetworkBehaviour
 
     EnemyIsGone EnemyIsGoneDelegate;
 
-    public void Init(BTPlayer player, BTObject btObject)
+    [Client]
+    public void Init(BTPlayer player, BTObject btObject, ShootableStats shootableStats)
     {
         this.player=player;
         this.btObject=btObject;
+        this.shootableStats = shootableStats;
     }
 
     void Update()
@@ -51,16 +58,18 @@ public class Shootable : NetworkBehaviour
                 isAttacking=false;
             }
         }
-
-        //DrawRangeGizmo();
     }
 
+    /// <summary>
+    /// Shoot a bullet/cannonball/rocket/laser
+    /// </summary>
+    [Client]
     void Shoot()
     {
-        if ((lastReloadTime + reloadTime) < Time.time)
+        if ((lastReloadTime + shootableStats.reloadTime) < Time.time)
         {
+            //ToDo: Use a more performant way, e.g. Pooling
             GameObject go=GameObject.Instantiate(shotPrefab, shootPosition.position, shootPosition.rotation );
-            //GameObject go = BTLocalGameManager.Instance.localPlayer.GetCannonball();
 
             NetworkServer.Spawn(go, connectionToClient);
 
@@ -68,7 +77,7 @@ public class Shootable : NetworkBehaviour
             go.transform.rotation=shootPosition.rotation;
             Shot shot=go.GetComponent<Shot>();
 
-            shot.Fire(initialShootSpeed);//enemyToShootAt.transform.position);
+            shot.Fire(initialShootSpeed);
 
             lastReloadTime=Time.time;
 
@@ -76,6 +85,9 @@ public class Shootable : NetworkBehaviour
 
     }
 
+    /// <summary>
+    /// for debug only
+    /// </summary>
     void OnDrawGizmosSelected()
     {
         if (isAttacking)

@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// Handles Damages, taken by an object
+/// Each object, that can be hit by enemy, should have this behavior
+/// </summary>
 public class Hitable : MonoBehaviour
 {
     
