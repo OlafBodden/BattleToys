@@ -50,14 +50,14 @@ public class BTObject : NetworkBehaviour
         aimable=this.transform.GetComponent<Aimable>();
         hitable=this.transform.GetComponent<Hitable>();
 
-        /* --> now done in StartPlacing()
+        /* --> now done in StartPlacing()*/
         //Disable our behaviors. On start, we are in placing-Mode. Nothing to do for all other behaviors
         if (moveable) moveable.enabled = false;
         if (shootable) shootable.enabled = false;
         if (selectable) selectable.enabled = false;
         if (aimable) aimable.enabled = false;
         if (hitable) hitable.enabled = false;
-        */
+        
 
         //Initialize our behaviors
         // moveable?.Init(this);
@@ -116,12 +116,12 @@ public class BTObject : NetworkBehaviour
         if (hitable) hitable.enabled = false;
 
         //Disable rigidbody (will be enabled after placing is finished
-        if (rigidbody != null)
+        if (GetComponent<Rigidbody>() != null)
         {
-            isKinematic_original = rigidbody.isKinematic;
-            rigidbody.detectCollisions = false;
-            rigidbody.isKinematic = true;
-            rigidbody.Sleep();
+            isKinematic_original = GetComponent<Rigidbody>().isKinematic;
+            GetComponent<Rigidbody>().detectCollisions = false;
+            GetComponent<Rigidbody>().isKinematic = true;
+            GetComponent<Rigidbody>().Sleep();
         }
     }
 
@@ -156,12 +156,14 @@ public class BTObject : NetworkBehaviour
         }
 
         //re-enable rigidbody
-        if (rigidbody != null)
+        if (GetComponent<Rigidbody>() != null)
         { 
-            rigidbody.isKinematic = isKinematic_original;
-            rigidbody.detectCollisions = true;
-            rigidbody.WakeUp();
+            GetComponent<Rigidbody>().isKinematic = isKinematic_original;
+            GetComponent<Rigidbody>().detectCollisions = true;
+            GetComponent<Rigidbody>().WakeUp();
         }
+
+        BTLocalGameManager.Instance.RegisterAsObject(this);
     }
 
     //Used as Delegate-Function in shootable.Attack. Is invoked, when shootable lost its hitable
@@ -179,7 +181,9 @@ public class BTObject : NetworkBehaviour
     //Called by Placeable, when placing is canceled by user
     public void Destroy()
     {
-       CmdDestroy();     
+        BTLocalGameManager.Instance.DeRegisterAsObject(this);
+
+        CmdDestroy();   
 
     }
 
@@ -239,7 +243,7 @@ public class BTObject : NetworkBehaviour
     [Client]
     public void SelectObjectAsTarget()
     {
-        if (!base.haseAuthority) return;
+        if (!base.hasAuthority) return;
 
         selectable?.SelectAsTarget();
         
@@ -249,7 +253,7 @@ public class BTObject : NetworkBehaviour
     [Client]
     public void DeSelectObjectAsTarget()
     {
-        if (!base.haseAuthority) return;
+        if (!base.hasAuthority) return;
 
         selectable?.DeSelectAsTarget();
         
@@ -265,7 +269,9 @@ public class BTObject : NetworkBehaviour
     //called by 
     public bool IsAlive()
     {
-        return hitable?.IsAlive();
+        if (hitable==null) return true;
+
+        return hitable.IsAlive();
     }
 
 

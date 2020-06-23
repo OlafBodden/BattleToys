@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89b5114617511924588f6bf209830973, type: 3}
+  m_Name: PlaneBase
+  m_EditorClassIdentifier: 
+  name: PlaneBase
+  prefab: {fileID: 3083232570713562446, guid: f39c1c79303b9d2498e7bb4f0ce71ee8, type: 3}
+  icon: {fileID: 21300000, guid: 6bff13a2c3f5418478c2dc5f5bf41238, type: 3}
+  description: Flugzeuglandeplattform mit Flugzeug
+  costPoints: 10

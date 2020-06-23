@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
 public class Placeable : MonoBehaviour
 {
 
@@ -60,6 +59,8 @@ public class Placeable : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (btObject==null) return; //Wait until we are initialized
+
         //Checks if we raycast-hit the floor.
         //if not, we cannot place
         //if yes, check if other objects are inside collisionRadius--> if yes, we cannot plye
@@ -86,6 +87,7 @@ public class Placeable : MonoBehaviour
             
         } else
         {
+            Debug.Log($"markingProjector {markingProjector.gameObject.name}");
             markingProjector.material.color = Color.red;
         }
      

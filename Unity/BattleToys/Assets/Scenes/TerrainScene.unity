@@ -6259,6 +6259,7 @@ MonoBehaviour:
     type: 2}
   projectorMaterialHoveredTarget: {fileID: 2100000, guid: 9dc70990b4eb92d408c5cef22467417a,
     type: 2}
+  myBTObjects: []
 --- !u!4 &1671606104
 Transform:
   m_ObjectHideFlags: 0
