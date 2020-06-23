@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class Aimable :  NetworkBehaviour 
+public class Aimable :  MonoBehavior 
 {
     public Transform horizontalTurningTransform;
 
