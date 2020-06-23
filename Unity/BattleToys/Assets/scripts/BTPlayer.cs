@@ -256,6 +256,7 @@ public class BTPlayer : NetworkBehaviour
                         moveable?.MoveToDestination(hit.point);
 
                         //As we may had a enemy-target before, tell the attacking-behavior to stop attacking
+                        Shootable shootable=selectedUnit.gameObject.GetComponent<Shootable>();
                         shootable?.CancelAttack();
 
 

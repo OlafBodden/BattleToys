@@ -87,7 +87,7 @@ public class Placeable : MonoBehaviour
             
         } else
         {
-            Debug.Log($"markingProjector {markingProjector.gameObject.name}");
+            //Debug.Log($"markingProjector {markingProjector.gameObject.name}");
             markingProjector.material.color = Color.red;
         }
      

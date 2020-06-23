@@ -111,7 +111,7 @@ public class Selectable : MonoBehaviour
     {       
         if (isSelected==true) return; //Only mark as hovered, when not allready Selected
 
-        Debug.Log($"I am hovered (unit): { this.gameObject.name }");
+        //Debug.Log($"I am hovered (unit): { this.gameObject.name }");
 
         if (markingProjector)
         {
@@ -127,7 +127,7 @@ public class Selectable : MonoBehaviour
     {
         if (isSelected) return; //If a unit is selected, it cannot "De-Hover"
 
-        Debug.Log($"I am De-hovered: { this.gameObject.name }");
+        //Debug.Log($"I am De-hovered: { this.gameObject.name }");
 
         if (markingProjector)
         {
@@ -142,7 +142,7 @@ public class Selectable : MonoBehaviour
     {       
         if (isSelected==true) return; //Only mark as hovered, when not allready Selected
 
-        Debug.Log($"I am hovered (target): { this.gameObject.name }");
+        //Debug.Log($"I am hovered (target): { this.gameObject.name }");
 
         if (markingProjector)
         {

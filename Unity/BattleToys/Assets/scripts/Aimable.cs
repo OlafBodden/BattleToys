@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class Aimable :  MonoBehavior 
+public class Aimable :  MonoBehaviour 
 {
     private BTPlayer player;
     private BTObject btObject;
@@ -57,9 +57,11 @@ public class Aimable :  MonoBehavior
             bool h= RotateHorizontal(targetPosition);
             bool v= fixedVerticalAngle==false ? RotateVertical(targetPosition) : RotateVerticalForCannonballshot(targetPosition,initialShotSpeed);
 
+            //Debug.Log($"h==v==true?: {h}=={v}");
+
             return (h==v==true);
 
-
+            
         }
 
         return false;
@@ -136,7 +138,7 @@ public class Aimable :  MonoBehavior
         if (targetInRange)
             currentAngle = useLowAngle ? angle1 : angle0; 
 
-        Debug.Log($"SetTargetWithSpeed({point},{speed},{useLowAngle})  targetInRange: {targetInRange} angle0: {angle0} angle1: {angle1}");
+//        Debug.Log($"SetTargetWithSpeed({point},{speed},{useLowAngle})  targetInRange: {targetInRange} angle0: {angle0} angle1: {angle1}");
         
         
 

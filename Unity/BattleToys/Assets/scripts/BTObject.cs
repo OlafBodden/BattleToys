@@ -35,8 +35,13 @@ public class BTObject : NetworkBehaviour
    
     bool isKinematic_original = false; //needed to enable/disable rigidbody
 
+
+
+
     public override void OnStartAuthority() 
     {
+        base.OnStartAuthority();
+
         //get our player-reference
         player=BTLocalGameManager.Instance.localPlayer;
 
@@ -62,13 +67,37 @@ public class BTObject : NetworkBehaviour
         //Initialize our behaviors
         // moveable?.Init(this);
         hitable?.Init(this, maxHealth);
+    }
 
+    //Called after OnStartAuthority
+    public override void OnStartClient()
+    {
+        if (base.hasAuthority) return; //If we have authority we have allready done initialization
 
-    
+        //Get references to our behaviors
+        moveable=this.transform.GetComponent<Moveable>();
+        shootable=this.transform.GetComponent<Shootable>();
+        selectable=this.transform.GetComponent<Selectable>();
+        aimable=this.transform.GetComponent<Aimable>();
+        hitable=this.transform.GetComponent<Hitable>();
+
+        //Disable everything as long as we are not in Match-Mode
+        if (moveable) moveable.enabled = false;
+        if (shootable) shootable.enabled = false;
+        if (selectable) selectable.enabled = false;
+        if (aimable) aimable.enabled = false;
+        if (hitable) hitable.enabled = false;
+        
+
+        //Initialize our behaviors
+        // moveable?.Init(this);
+        hitable?.Init(this, maxHealth);
     }
 
     void Update()
     {
+        if (!base.hasAuthority) return; 
+        
         if (moveAndAttackState==MoveAndAttackState.Move)
         {
             if (shootable.IsEnemeyInsideRange(enemyToShootAt))
@@ -90,6 +119,7 @@ public class BTObject : NetworkBehaviour
                 //Ziel ist anvisiert
                
                 shootable.Attack(enemyToShootAt, AttackLostHitable);
+                moveAndAttackState=MoveAndAttackState.Attack;
 
             } 
         } else if ( moveAndAttackState==MoveAndAttackState.Attack)
@@ -98,7 +128,12 @@ public class BTObject : NetworkBehaviour
             {
                 shootable.CancelAttack();
                 moveAndAttackState=MoveAndAttackState.Aiming;
+            } else
+            {
+                //stay in attack-mode...
             }
+
+
         }
         
 
@@ -137,12 +172,12 @@ public class BTObject : NetworkBehaviour
         if (shootable)
         {
             shootable.enabled = true;
-            shootable.Init(this.player, this);
+            shootable.Init(this.player, this, this.btObjectSO.shootableStats);
         }
         if (selectable)
         {
             selectable.enabled = true;
-            selectable.Init(this.player);
+            selectable.Init(this.player, this, this.btObjectSO.selectableStats);
         }
         if (aimable)
         {
@@ -228,10 +263,10 @@ public class BTObject : NetworkBehaviour
         //To do: In case of plane: return to base
 
         //Deselect target (hide selecting-ring)
-        shootable.GetTarget().transform.GetComponent<Selectable>()?.DeSelectAsTarget();
+        shootable?.GetTarget()?.transform?.GetComponent<Selectable>()?.DeSelectAsTarget();
 
         //Stop Attacking
-        shootable.CancelAttack();
+        shootable?.CancelAttack();
 
         //No Need to stop aiming...
         

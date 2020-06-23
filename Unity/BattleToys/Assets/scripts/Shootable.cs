@@ -118,14 +118,16 @@ public class Shootable : NetworkBehaviour
         //Check, if we have an enemy-targe
         if (enemyToShootAt==null)
         {
+            //Debug.Log("CheckIfTargetStillAttackable - enemyToShootAt==null");
             //isAttacking=false;
             return false;
         }
 
 
         //Check if we have an enemy-Target
-        if (!enemyToShootAt.IsAlive())
+        if (enemyToShootAt.IsAlive()==false)
         {
+            //Debug.Log("CheckIfTargetStillAttackable - enemyToShootAt.IsAlive()==false");
             //isAttacking=false;
             return false;
         }
@@ -133,6 +135,7 @@ public class Shootable : NetworkBehaviour
         //Check, if enemy target is inside range
         if (Vector3.Distance(this.transform.position,enemyToShootAt.transform.position)>attackRange)
         {
+            //Debug.Log($"CheckIfTargetStillAttackable - Distance ({Vector3.Distance(this.transform.position,enemyToShootAt.transform.position)}) > attackRange ({attackRange})");
             //isAttacking=false;
             return false;
         }
@@ -154,9 +157,12 @@ public class Shootable : NetworkBehaviour
 
     public void Attack(Hitable enemyToShootAt, EnemyIsGone enemyIsGoneFunc)
     {
+        
         this.enemyToShootAt=enemyToShootAt;
         this.EnemyIsGoneDelegate=enemyIsGoneFunc;
         isAttacking=CheckIfTargetStillAttackable();
+
+        Debug.Log($"Attack - hitable: {enemyToShootAt.gameObject.name} isAttacking: {isAttacking}" );
     }
     
     public void CancelAttack()
