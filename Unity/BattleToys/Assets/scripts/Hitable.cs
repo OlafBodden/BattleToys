@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +15,9 @@ public class Hitable : MonoBehaviour
     float currentHealth;
     float maxHealth;
 
+    public delegate void HealthValueChanged(float newHealthValuePercentage);
+	public event HealthValueChanged OnHealthValueChanged;
+
     //Called by BTObject, after it is placed
     public void Init(BTObject btObject, float maxHealth)
     {
@@ -21,6 +25,7 @@ public class Hitable : MonoBehaviour
         this.currentHealth=maxHealth;
         this.maxHealth=maxHealth;
 
+        if (OnHealthValueChanged!=null) OnHealthValueChanged(currentHealth/maxHealth);
     }
 
     //Called by enemy-Shootable to check, if this hitable can still be shot (or allready exploding)
@@ -51,6 +56,7 @@ public class Hitable : MonoBehaviour
     {
         currentHealth-=amount;
 
+        if (OnHealthValueChanged!=null) OnHealthValueChanged(currentHealth/maxHealth);
 
         if (currentHealth<0)
         {
@@ -66,7 +72,7 @@ public class Hitable : MonoBehaviour
     {
         //ToDo: Play effect, bevor Destroy...
    
-        Destroy(this.gameObject);
+        btObject.Destroy();
     }
 
 

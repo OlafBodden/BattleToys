@@ -13,6 +13,8 @@ public class Shot : Mirror.NetworkBehaviour
 
     public float initialVelocity=30;
 
+    [SerializeField] float damageAmount=10f;
+
     [SyncVar]
     Vector3 realPosition = Vector3.zero;
     [SyncVar]
@@ -65,6 +67,26 @@ public class Shot : Mirror.NetworkBehaviour
         {
             rigidBody.isKinematic=true;
         }
+    }
+
+    // ServerCallback because we don't want a warning if OnTriggerEnter is
+    // called on the client
+    [ServerCallback]
+    void OnCollisionEnter(Collision collisionInfo)
+    {
+        //who did we hit?
+        BTObject enemyBTObject=collisionInfo.transform.GetComponentInParent<BTObject>();
+        Hitable enemyHitable=enemyBTObject?.GetComponent<Hitable>();
+
+        if (enemyBTObject==null) return;
+
+        if (enemyBTObject.hasAuthority) return; //it's one of our own Objects
+
+        if (enemyHitable!=null) //we hit an enemy, that is hitable
+        {
+            enemyHitable.TakeDamage(damageAmount, TakeDamageEffectTpye.Nothing);
+        }
+
     }
 
     // destroy for everyone on the server
