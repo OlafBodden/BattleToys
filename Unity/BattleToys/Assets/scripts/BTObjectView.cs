@@ -9,6 +9,9 @@ public class BTObjectView : MonoBehaviour
 
     public Image healthBarMask;
 
+    Transform cameraToLookAt;
+
+
     Hitable hitable;
 
     void OnEnable()
@@ -21,6 +24,11 @@ public class BTObjectView : MonoBehaviour
         } else
         {
             hudCanvas.enabled=false;
+        }
+
+        if (cameraToLookAt==null)
+        {
+            cameraToLookAt=BTLocalGameManager.Instance.localPlayer?.GetComponentInChildren<Camera>().transform;
         }
     }
 
@@ -37,5 +45,10 @@ public class BTObjectView : MonoBehaviour
         healthBarMask.fillAmount=percentage;
     }
 
+    void LateUpdate()
+    {
+        //allways face towards camera
+        if (cameraToLookAt) this.hudCanvas.transform.LookAt(cameraToLookAt);
+    }
 
 }

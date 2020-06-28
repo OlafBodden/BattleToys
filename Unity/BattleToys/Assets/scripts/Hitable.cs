@@ -2,17 +2,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
+
 
 
 /// <summary>
 /// Handles Damages, taken by an object
 /// Each object, that can be hit by enemy, should have this behavior
 /// </summary>
-public class Hitable : MonoBehaviour
+public class Hitable : NetworkBehaviour
 {
     
+    public Transform preferedHitPositionTransform;
     BTObject btObject;
+
+    [SyncVar]
     float currentHealth;
+
+    [SyncVar]
     float maxHealth;
 
     public delegate void HealthValueChanged(float newHealthValuePercentage);
@@ -51,38 +58,84 @@ public class Hitable : MonoBehaviour
         bTObject?.DeSelectObjectAsTarget();
     }
 
-    //Called by enemy-Shootable to apply damage
-    public void TakeDamage(float amount, TakeDamageEffectTpye effectType)
+    // //Called by enemy-Shootable to apply damage
+    // public void TakeDamage(float amount, TakeDamageEffectTpye effectType)
+    // {
+    //     if (!base.hasAuthority) return;
+
+    //     CmdTakeDamage(amount);
+
+
+    //     //ToDo: Play Hit-Effect
+
+
+    // }
+
+    public Vector3 GetPreferedHitPosition()
     {
+        return preferedHitPositionTransform.position;
+    }
+
+    [Command(ignoreAuthority = true)]
+    public void CmdTakeDamage(float amount, Vector3 hitPosition, Vector3 hitNormal, EffectType effectType)
+    {
+        Debug.Log($"Hitable - CmdTakeDamage({amount})");
         currentHealth-=amount;
+
+        RpcTakeDamage(currentHealth, hitPosition, hitNormal, effectType);
+    }
+
+    [ClientRpc]
+    public void RpcTakeDamage(float newCurrentHealth, Vector3 hitPosition,  Vector3 hitNormal,EffectType effectType)
+    {
+        currentHealth=newCurrentHealth;
+
+        Debug.Log($"Hitable - RpcTakeDamage({newCurrentHealth})");
 
         if (OnHealthValueChanged!=null) OnHealthValueChanged(currentHealth/maxHealth);
 
-        if (currentHealth<0)
+        if (currentHealth>0) //If we are still alive
         {
-            Die();
-        } else
+            PlayHitEffect(hitPosition,  hitNormal, effectType);
+
+        } else //If we are dying
         {
-            //ToDo: Play Hit-Effect
+            PlayHitEffect(hitPosition, hitNormal, EffectType.ExplosionMedium);
+        }
+
+        if (base.hasAuthority)
+        {
+            if (currentHealth<=0)
+            {
+                Invoke("Die",0.1f);
+            } 
         }
     }
 
+    [Client]
+    void PlayHitEffect(Vector3 hitPosition,  Vector3 hitNormal,EffectType effectType)
+    {
+        //ToDo: Add some sound here
+
+        Debug.Log($"PlayHitEffect({this.gameObject.name}). Now play Effect of type {effectType} at position {hitPosition}" );
+
+        BTLocalGameManager.Instance.PlayLocalEffect(effectType,hitPosition,Quaternion.Euler(hitNormal));
+    }
 
     void Die()
     {
-        //ToDo: Play effect, bevor Destroy...
-   
+        //Let the Server destroy this object
         btObject.Destroy();
     }
 
 
 }
 
-public enum TakeDamageEffectTpye
-{
-    Nothing,
-    GunshotHitSparcle,
-    CannonballHitSparcle,
-    LaserHitSparcle,
-    Explosion
-}
+// public enum TakeDamageEffectTpye
+// {
+//     Nothing,
+//     GunshotHitSparcle,
+//     CannonballHitSparcle,
+//     LaserHitSparcle,
+//     Explosion
+// }

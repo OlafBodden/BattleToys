@@ -11,7 +11,7 @@ public class Placeable : MonoBehaviour
 
     Camera cam;         //Reference to players camera. We need this for raycasts
 
-    Rigidbody rigidbody;    //Reference to rididbody of this gameobject. 
+    Rigidbody _rigidbody;    //Reference to rididbody of this gameobject. 
                             //We need this to disable it during placing and reenable it after
 
     Projector markingProjector;     //projector for displaying our marking-ring
@@ -35,7 +35,7 @@ public class Placeable : MonoBehaviour
         this.player=player;
         this.btObject = btObject;
         cam =player.GetComponentInChildren<Camera>();
-        rigidbody = GetComponent<Rigidbody>();
+        _rigidbody = GetComponent<Rigidbody>();
 
         markingProjector = GetComponentInChildren<Projector>();
         if (markingProjector == null) Debug.LogError("No Projector found");
@@ -108,7 +108,7 @@ public class Placeable : MonoBehaviour
 
             Destroy(this); //Placeable is no longer needed
 
-            return rigidbody.gameObject;
+            return _rigidbody.gameObject;
         } else
         {
             //Can't place here. 

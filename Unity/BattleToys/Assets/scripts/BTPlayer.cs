@@ -115,8 +115,7 @@ public class BTPlayer : NetworkBehaviour
 
         lastSeleectedUnit=selectedUnit; //remember the selected unit of the last frame
 
-        //Handle Exit-Game-Input
-        if (Input.GetKey(KeyCode.Escape)) Application.Quit();   //ToDo: Go back to main menue
+
 
         //Wenn Shop Objekt bereits ausgwählt und am plazieren
         if (playerState==PlayerState.PlacingShopObject) 
@@ -161,7 +160,7 @@ public class BTPlayer : NetworkBehaviour
                     BTObject currentBTObject=go?.GetComponent<BTObject>();
 
                     //Tell BTObject of PlacedObject, that it is now placed
-                    currentBTObject?.OnPlaced();
+                    currentBTObject?.PlacedByPlayer();
 
                     //Finish placing of that object 
                     ShopItemPlaced(go);
@@ -249,6 +248,9 @@ public class BTPlayer : NetworkBehaviour
                     Hitable target=hit.rigidbody?.GetComponent<Hitable>();
                     if (target==null)
                     {
+                        //Cancel MoveAndAttack-Mode, if needed
+                        selectedUnit.GetComponent<BTObject>()?.CancelMoveAndAttack();
+
                         //Get Moveable-Behavior of currently selected unit (if any)
                         Moveable moveable=selectedUnit.gameObject.GetComponent<Moveable>();
 
@@ -545,7 +547,15 @@ public class BTPlayer : NetworkBehaviour
         {
             //Start Match       
             RpcStartMatch();
+            if (base.isServerOnly) CmdRaiseCourtainOnServerOnly(); //Courtain-GameObjekt auf Server-Instanz löschen
         }
+    }
+
+    [Command]
+    void CmdRaiseCourtainOnServerOnly()
+    {
+        //Courtain-GameObjekt auf Server-Instanz löschen
+        BTLocalGameManager.Instance.courtain.RaiseCourtain();
     }
 
     /// <summary>

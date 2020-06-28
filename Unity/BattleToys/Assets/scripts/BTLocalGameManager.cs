@@ -46,6 +46,8 @@ public class BTLocalGameManager : MonoBehaviour
     //List, that contains all BTObjects of the player
     public List<BTObject> myBTObjects;
 
+    public LocalEffectPool localEffectPool;
+
 
 
     private void Awake() 
@@ -53,12 +55,20 @@ public class BTLocalGameManager : MonoBehaviour
         //Sigleton-Stuff
         _instance=this;
 
+        localEffectPool=GetComponentInChildren<LocalEffectPool>();
+
         //Enable and initialize Network-UI-Panel
         ShowNetworkUI();
         debugText=GameObject.Find("TextDebug").GetComponent<TextMeshProUGUI>();
 
         //Initialize BT-Object-List (that will cotain each BTObject, that is spawned by the local player)
         myBTObjects=new List<BTObject>();
+    }
+
+    void Update()
+    {
+        //Handle Exit-Game-Input
+        if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();   //ToDo: Go back to main menue
     }
 
     /// <summary>
@@ -207,6 +217,22 @@ public class BTLocalGameManager : MonoBehaviour
     {
         myBTObjects.Remove(o);
     }
+
+    public void PlayLocalEffect(EffectType effectType, Vector3 position, Quaternion rot)
+    {
+        GameObject go=localEffectPool.GetObjectFromPool(effectType);
+
+        go.transform.position=position;
+        go.transform.rotation=rot;
+ 
+    }
+
+    public void ReturnLocalEffectToStock(LocalEffect le)
+    {
+        localEffectPool.ReturnGameObjectToPool(le);
+    }
+
+
 
 
 

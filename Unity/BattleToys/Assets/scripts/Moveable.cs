@@ -12,7 +12,7 @@ using UnityEngine.AI;
 public class Moveable : NetworkBehaviour
 {
 
-    BTPlayer player;
+    //BTPlayer player;
     BTObject btObject;
     MoveableStats moveableStats;
 
@@ -30,9 +30,8 @@ public class Moveable : NetworkBehaviour
  
 
 
-    public void Init(BTPlayer player, BTObject btObject, MoveableStats moveableStats)
+    public void Init(BTObject btObject, MoveableStats moveableStats)
     {
-        this.player=player;
         this.btObject=btObject;
         this.moveableStats = moveableStats;
 
@@ -97,8 +96,8 @@ public class Moveable : NetworkBehaviour
         if (agent.isStopped) agent.isStopped=false;
         agent.destination = destination;
 
-        GameObject go=GameObject.CreatePrimitive(PrimitiveType.Cube);
-        go.transform.position=destination;
+        //GameObject go=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        //go.transform.position=destination;
    
     }
 

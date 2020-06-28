@@ -5,7 +5,6 @@ using Mirror;
 
 public class Aimable :  MonoBehaviour 
 {
-    private BTPlayer player;
     private BTObject btObject;
 
     public Transform horizontalTurningTransform;
@@ -23,9 +22,8 @@ public class Aimable :  MonoBehaviour
 
     public AimMode aimMode=AimMode.Nothing;
 
-    public void Init(BTPlayer player, BTObject btObject)
+    public void Init(BTObject btObject)
     {
-        this.player=player;
         this.btObject=btObject;
     }
 

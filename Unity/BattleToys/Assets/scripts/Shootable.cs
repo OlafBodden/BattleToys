@@ -11,7 +11,6 @@ using Mirror;
 public class Shootable : NetworkBehaviour 
 {
     
-    private BTPlayer player;                //Reference to local Player-Object
     private BTObject btObject;              //Reference to the BTObject, containing this instance
     private ShootableStats shootableStats;  //Reference to the object's ShootableStats
 
@@ -35,9 +34,8 @@ public class Shootable : NetworkBehaviour
     EnemyIsGone EnemyIsGoneDelegate;
 
     [Client]
-    public void Init(BTPlayer player, BTObject btObject, ShootableStats shootableStats)
+    public void Init(BTObject btObject, ShootableStats shootableStats)
     {
-        this.player=player;
         this.btObject=btObject;
         this.shootableStats = shootableStats;
     }
@@ -63,25 +61,37 @@ public class Shootable : NetworkBehaviour
     /// <summary>
     /// Shoot a bullet/cannonball/rocket/laser
     /// </summary>
-    [Client]
+    
     void Shoot()
     {
         if ((lastReloadTime + shootableStats.reloadTime) < Time.time)
         {
+            CmdCreateShot(shootPosition.position, shootPosition.rotation, initialShootSpeed);
             //ToDo: Use a more performant way, e.g. Pooling
-            GameObject go=GameObject.Instantiate(shotPrefab, shootPosition.position, shootPosition.rotation );
+            //GameObject go=GameObject.Instantiate(shotPrefab, shootPosition.position, shootPosition.rotation );
 
-            NetworkServer.Spawn(go, connectionToClient);
+            //NetworkServer.Spawn(go, base.connectionToClient);
 
-            go.transform.position=shootPosition.position;
-            go.transform.rotation=shootPosition.rotation;
-            Shot shot=go.GetComponent<Shot>();
+            //go.transform.position=shootPosition.position;
+            //
+            //go.transform.rotation=shootPosition.rotation;
 
-            shot.Fire(initialShootSpeed);
 
             lastReloadTime=Time.time;
 
         }
+    }
+
+    [Command] 
+    void CmdCreateShot(Vector3 pos, Quaternion rot, float initialShootSpeed)
+    {
+        GameObject go=GameObject.Instantiate(shotPrefab, pos, rot);
+
+        NetworkServer.Spawn(go, base.connectionToClient);
+
+        Shot shot=go.GetComponent<Shot>();
+
+        shot.RpcFire(initialShootSpeed);
 
     }
 

@@ -30,7 +30,7 @@ public class Shot : Mirror.NetworkBehaviour
 
     void Update()
     {
-        if (base.hasAuthority)
+        if (base.isServer)
         {
             // update the server with position/rotation
             updateInterval += Time.deltaTime;
@@ -49,13 +49,15 @@ public class Shot : Mirror.NetworkBehaviour
 
     // set velocity for server and client. this way we don't have to sync the
     // position, because both the server and the client simulate it.
-    [Client]
-    public void Fire(float velocity)
+    [ClientRpc]
+    public void RpcFire(float velocity)
     {
+        Debug.Log("Fire");
         rigidBody=GetComponent<Rigidbody>();
 
-        if (base.hasAuthority)
+        if (base.isServer)
         {
+            Debug.Log("Fire - isServer - set Rigidbody-values, velocity: " + velocity);
             rigidBody.isKinematic=false;
 
             //Vector3 velocity=GetStartVelocity2(target,this.transform.rotation.x);
@@ -65,26 +67,43 @@ public class Shot : Mirror.NetworkBehaviour
 
         } else
         {
+            Debug.Log("Fire - is NOT server - set Rigidbody-values, velocity: " + velocity);
             rigidBody.isKinematic=true;
         }
     }
 
     // ServerCallback because we don't want a warning if OnTriggerEnter is
     // called on the client
+    // ServerCallbacks run on Server
     [ServerCallback]
     void OnCollisionEnter(Collision collisionInfo)
     {
-        //who did we hit?
-        BTObject enemyBTObject=collisionInfo.transform.GetComponentInParent<BTObject>();
-        Hitable enemyHitable=enemyBTObject?.GetComponent<Hitable>();
-
-        if (enemyBTObject==null) return;
-
-        if (enemyBTObject.hasAuthority) return; //it's one of our own Objects
-
-        if (enemyHitable!=null) //we hit an enemy, that is hitable
+        
+        //if (base.isServer)
         {
-            enemyHitable.TakeDamage(damageAmount, TakeDamageEffectTpye.Nothing);
+            Debug.Log($"Shot - OnCollisionEnter - other: {collisionInfo.transform.gameObject.name}" );
+            //who did we hit?
+            BTObject enemyBTObject=collisionInfo.other.transform.GetComponentInParent<BTObject>();
+            if (enemyBTObject==null) enemyBTObject=collisionInfo.other.transform.GetComponent<BTObject>();
+            Hitable enemyHitable=enemyBTObject?.GetComponent<Hitable>();
+
+
+
+            if (enemyBTObject==null) return;
+
+            Debug.Log($"Shot - enemyBTObject: {(enemyBTObject!=null ? enemyBTObject.gameObject.name : "NULL")} enemyBTObject.hasAuthority: {(enemyBTObject!=null ? enemyBTObject.hasAuthority.ToString() : "NULL")} enemyHitable is null: {enemyHitable==null}");
+
+
+            if (enemyBTObject.connectionToClient==this.connectionToClient) return; //avoid friedly fire
+
+            if (enemyHitable!=null) //we hit an enemy, that is hitable
+            {
+                Debug.Log($"Shot - enemyBTObject: {(enemyBTObject!=null ? enemyBTObject.gameObject.name : "NULL")}.TakeDame({damageAmount})");
+
+                enemyHitable.CmdTakeDamage(damageAmount, collisionInfo.contacts[0].point, collisionInfo.contacts[0].normal,EffectType.SparkleSmall);
+            
+                DestroySelf();
+            }
         }
 
     }
@@ -104,7 +123,7 @@ public class Shot : Mirror.NetworkBehaviour
         //NetworkServer.Destroy(gameObject);
     }
 
-    [Command]
+    [Command(ignoreAuthority = true)]
     void CmdSync(Vector3 position, Quaternion rotation)
     {
         realPosition = position;

@@ -42,6 +42,8 @@ public class BTObject : NetworkBehaviour
     {
         base.OnStartAuthority();
 
+        isKinematic_original = GetComponent<Rigidbody>().isKinematic;
+
         //get our player-reference
         player=BTLocalGameManager.Instance.localPlayer;
 
@@ -66,13 +68,15 @@ public class BTObject : NetworkBehaviour
 
         //Initialize our behaviors
         // moveable?.Init(this);
-        hitable?.Init(this, maxHealth);
+        //hitable?.Init(this, maxHealth);
     }
 
     //Called after OnStartAuthority
     public override void OnStartClient()
     {
         if (base.hasAuthority) return; //If we have authority we have allready done initialization
+
+        isKinematic_original = GetComponent<Rigidbody>().isKinematic;
 
         //Get references to our behaviors
         moveable=this.transform.GetComponent<Moveable>();
@@ -114,7 +118,7 @@ public class BTObject : NetworkBehaviour
                 moveAndAttackState=MoveAndAttackState.Attack;
                 shootable.Attack(enemyToShootAt, AttackLostHitable);
             }
-            else if (aimable.Aim(enemyToShootAt.transform.position,true, shootable.initialShootSpeed)==true) 
+            else if (aimable.Aim(enemyToShootAt.GetPreferedHitPosition(),true, shootable.initialShootSpeed)==true) 
             {
                 //Ziel ist anvisiert
                
@@ -124,7 +128,7 @@ public class BTObject : NetworkBehaviour
             } 
         } else if ( moveAndAttackState==MoveAndAttackState.Attack)
         {
-            if (aimable.Aim(enemyToShootAt.transform.position,true,shootable.initialShootSpeed)==false)
+            if (aimable.Aim(enemyToShootAt.GetPreferedHitPosition(),true,shootable.initialShootSpeed)==false)
             {
                 shootable.CancelAttack();
                 moveAndAttackState=MoveAndAttackState.Aiming;
@@ -153,26 +157,32 @@ public class BTObject : NetworkBehaviour
         //Disable rigidbody (will be enabled after placing is finished
         if (GetComponent<Rigidbody>() != null)
         {
-            isKinematic_original = GetComponent<Rigidbody>().isKinematic;
+            
             GetComponent<Rigidbody>().detectCollisions = false;
             GetComponent<Rigidbody>().isKinematic = true;
             GetComponent<Rigidbody>().Sleep();
         }
     }
 
-    //Called by BTPlayer, when a new BTObject is placed
-    public void OnPlaced()
+    [Command]
+    void CmdPlaced()
     {
-        //Enbale our behaviors. 
+        RpcOnPlaced();
+    }
+
+    [ClientRpc]
+    void RpcOnPlaced()
+    {
+       //Enbale our behaviors. 
         if (moveable)
         {
             moveable.enabled = true;
-            moveable.Init(this.player, this, this.btObjectSO.moveableStats);
+            moveable.Init(this, this.btObjectSO.moveableStats);
         }
         if (shootable)
         {
             shootable.enabled = true;
-            shootable.Init(this.player, this, this.btObjectSO.shootableStats);
+            shootable.Init( this, this.btObjectSO.shootableStats);
         }
         if (selectable)
         {
@@ -182,7 +192,7 @@ public class BTObject : NetworkBehaviour
         if (aimable)
         {
             aimable.enabled = true;
-            aimable.Init(this.player, this);
+            aimable.Init(this);
         }
         if (hitable)
         {
@@ -198,7 +208,16 @@ public class BTObject : NetworkBehaviour
             GetComponent<Rigidbody>().WakeUp();
         }
 
-        BTLocalGameManager.Instance.RegisterAsObject(this);
+        if (base.hasAuthority)
+        {
+            BTLocalGameManager.Instance.RegisterAsObject(this);
+        }
+    }
+
+    //Called by BTPlayer, when a new BTObject is placed
+    public void PlacedByPlayer()
+    {
+        CmdPlaced();
     }
 
     //Used as Delegate-Function in shootable.Attack. Is invoked, when shootable lost its hitable
@@ -216,6 +235,8 @@ public class BTObject : NetworkBehaviour
     //Called by Placeable, when placing is canceled by user
     public void Destroy()
     {
+        if (!base.hasAuthority) return;
+
         BTLocalGameManager.Instance.DeRegisterAsObject(this);
 
         CmdDestroy();   
