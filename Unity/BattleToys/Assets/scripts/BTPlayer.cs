@@ -521,6 +521,9 @@ public class BTPlayer : NetworkBehaviour
         //Check, if we are not allready in ReadyForMatch-State. We are not allowed to call this twice
         if (this.playerState!=PlayerState.ReadyForMatch)
         {
+            BTLocalGameManager.Instance.HideShop();
+            BTLocalGameManager.Instance.LocalPlayerIsWaitingForMatch();
+
             this.playerState=PlayerState.ReadyForMatch;
             CmdPlayerIsReadyForMatch();     //Tell the server, that one more player is readyForMatch. Server is syncing this info with all clients
             

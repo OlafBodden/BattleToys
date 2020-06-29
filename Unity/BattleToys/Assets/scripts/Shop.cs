@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class Shop : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class Shop : MonoBehaviour
     void Awake()
     {
         instance=this;
+        
     }
 
 
@@ -31,6 +33,7 @@ public class Shop : MonoBehaviour
         {
             itemSlots[i].gameObject.SetActive(false);
         }
+        this.gameObject.SetActive(false);
     }
 
     public void OpenShop(BTPlayer player)
@@ -45,6 +48,7 @@ public class Shop : MonoBehaviour
             itemSlots[i].GetComponent<ShopItemSlot>().Activate(item, this);
         }
 
+        transform.DOMove(new Vector3(150,0,0),1.5f,false).From(true);//.SetRelative();
     }
 
     public void PlayerFinishedShopping()
@@ -53,10 +57,17 @@ public class Shop : MonoBehaviour
 
     }
 
+
+
     public void Hide()
     {
         this.gameObject.SetActive(false);
 
+        transform.DOMove(new Vector3(150,0,0),1.5f,false).SetRelative(true).OnComplete(DisableMe);//.SetRelative();
+    }
 
+    void DisableMe()
+    {
+        this.gameObject.SetActive(false);
     }
 }

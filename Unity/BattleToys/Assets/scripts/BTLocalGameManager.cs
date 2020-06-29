@@ -5,6 +5,7 @@ using Mirror;
 using TMPro;
 //using UnityEngine.Events;
 using System;
+using DG.Tweening;
 
 /// <summary>
 /// Represents the game manager of each local instance
@@ -24,6 +25,9 @@ public class BTLocalGameManager : MonoBehaviour
     //UI-Panel and Text for Network-Info
     public GameObject PanelBackgroundNetworkHUD;
     public TextMeshProUGUI debugText;
+
+    public TextMeshProUGUI textWaitingForOtherPlayers;
+    public TextMeshProUGUI textChooseHostOrClient;
 
     //Reference to the shop. Set in inspector
     public GameObject shop;
@@ -63,12 +67,44 @@ public class BTLocalGameManager : MonoBehaviour
 
         //Initialize BT-Object-List (that will cotain each BTObject, that is spawned by the local player)
         myBTObjects=new List<BTObject>();
+
+        textChooseHostOrClient.gameObject.SetActive(false);
+        textWaitingForOtherPlayers.gameObject.SetActive(false);
+    }
+
+    void Start()
+    {
+        ShowTextChooseHostOrClient();
     }
 
     void Update()
     {
         //Handle Exit-Game-Input
         if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();   //ToDo: Go back to main menue
+    }
+
+    void ShowTextChooseHostOrClient()
+    {
+        textChooseHostOrClient.gameObject.SetActive(true);
+
+        textChooseHostOrClient.transform.DOScale(0.8f,1).From().SetLoops(-1, LoopType.Yoyo);
+    }
+
+    void HideTextChooseHostOrClient()
+    {
+        textChooseHostOrClient.gameObject.SetActive(false);
+    }
+
+    public void LocalPlayerIsWaitingForMatch()
+    {
+        textWaitingForOtherPlayers.gameObject.SetActive(true);
+
+        textWaitingForOtherPlayers.transform.DOScale(0.8f,1).From().SetLoops(-1, LoopType.Yoyo);   
+    }
+
+    void HideTextWaitingForMatch()
+    {
+        textWaitingForOtherPlayers.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -88,6 +124,8 @@ public class BTLocalGameManager : MonoBehaviour
     {
         Transform.FindObjectOfType<NetworkManagerHUD>().enabled=false;
         PanelBackgroundNetworkHUD.SetActive(false);
+
+        textChooseHostOrClient.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -96,15 +134,16 @@ public class BTLocalGameManager : MonoBehaviour
     /// </summary>
     private void ShowShop()
     {
+
         shop.SetActive(true);
     }
 
     /// <summary>
     /// Hides Shop
     /// </summary>
-    private void HideShop()
+    public void HideShop()
     {
-        shop.SetActive(false);
+        shop.GetComponent<Shop>().Hide();
     }
 
     /// <summary>
@@ -134,6 +173,8 @@ public class BTLocalGameManager : MonoBehaviour
     public void StartMatchCountdown()
     {
         HideShop();
+
+        HideTextWaitingForMatch();
 
         HideNetworkUI();
 
@@ -193,6 +234,8 @@ public class BTLocalGameManager : MonoBehaviour
     public void OpenShop()
     {
         ShowShop();
+
+        HideTextChooseHostOrClient();
 
         shop.GetComponent<Shop>().OpenShop(localPlayer);
 
