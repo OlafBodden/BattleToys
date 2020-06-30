@@ -102,6 +102,44 @@ public class BTObject : NetworkBehaviour
     {
         if (!base.hasAuthority) return; 
         
+        if (btObjectSO.shootableStats.targetingMode==TargetingMode.PlayerSelectsTarget)
+        {
+            HandleMoveAndAttack();
+        } else if (btObjectSO.shootableStats.targetingMode==TargetingMode.SelectAutoTarget_Closest ||
+                  btObjectSO.shootableStats.targetingMode==TargetingMode.SelectAutoTarget_Random ||
+                  btObjectSO.shootableStats.targetingMode==TargetingMode.SelectAutoTarget_Weakest)
+        {
+            HandleDefenceMode();
+        }
+    }
+
+    void HandleDefenceMode()
+    {
+        if (!shootable.CheckIfTargetStillAttackable())
+        {
+            enemyToShootAt=null;
+            shootable.CancelAttack();
+        }
+
+        if (!enemyToShootAt)
+        {
+            enemyToShootAt=shootable.GetAutoTarget(btObjectSO.shootableStats.targetingMode);
+        }
+
+        if (enemyToShootAt)
+        {
+            if (aimable.Aim(enemyToShootAt.GetPreferedHitPosition(),false, shootable.initialShootSpeed)==true) 
+            {
+                
+                shootable.Attack(enemyToShootAt, AttackLostHitable);
+            }
+        }
+    }
+
+    void HandleMoveAndAttack()
+    {
+
+        //Move- and Attack-State
         if (moveAndAttackState==MoveAndAttackState.Move)
         {
             if (shootable.IsEnemeyInsideRange(enemyToShootAt))
@@ -136,8 +174,6 @@ public class BTObject : NetworkBehaviour
             {
                 //stay in attack-mode...
             }
-
-
         }
         
 
@@ -165,15 +201,23 @@ public class BTObject : NetworkBehaviour
     }
 
     [Command]
-    void CmdPlaced()
+    void CmdPlaced(Vector3 position, Quaternion rotation)
     {
-        RpcOnPlaced();
+        //Let the server place the object corrently
+        this.transform.position=position;
+        this.transform.rotation=rotation;
+
+        RpcOnPlaced(position,rotation);
     }
 
     [ClientRpc]
-    void RpcOnPlaced()
+    void RpcOnPlaced(Vector3 position, Quaternion rotation)
     {
-       //Enbale our behaviors. 
+        //Let all clients place the object corrently
+        this.transform.position=position;
+        this.transform.rotation=rotation;
+
+        //Enbale our behaviors. 
         if (moveable)
         {
             moveable.enabled = true;
@@ -182,7 +226,7 @@ public class BTObject : NetworkBehaviour
         if (shootable)
         {
             shootable.enabled = true;
-            shootable.Init( this, this.btObjectSO.shootableStats);
+            shootable.Init( this, this.btObjectSO.shootableStats, this.btObjectSO.weaponSystem);
         }
         if (selectable)
         {
@@ -217,7 +261,7 @@ public class BTObject : NetworkBehaviour
     //Called by BTPlayer, when a new BTObject is placed
     public void PlacedByPlayer()
     {
-        CmdPlaced();
+        CmdPlaced(this.transform.position,this.transform.rotation);
     }
 
     //Used as Delegate-Function in shootable.Attack. Is invoked, when shootable lost its hitable

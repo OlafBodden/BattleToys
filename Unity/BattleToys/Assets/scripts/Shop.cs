@@ -48,7 +48,7 @@ public class Shop : MonoBehaviour
             itemSlots[i].GetComponent<ShopItemSlot>().Activate(item, this);
         }
 
-        transform.DOMove(new Vector3(150,0,0),1.5f,false).From(true);//.SetRelative();
+        transform.DOMove(new Vector3(150,0,0),1f,false).From(true);//.SetRelative();
     }
 
     public void PlayerFinishedShopping()
@@ -61,9 +61,9 @@ public class Shop : MonoBehaviour
 
     public void Hide()
     {
-        this.gameObject.SetActive(false);
+        
 
-        transform.DOMove(new Vector3(150,0,0),1.5f,false).SetRelative(true).OnComplete(DisableMe);//.SetRelative();
+        transform.DOMove(new Vector3(150,0,0),1f,false).SetRelative(true).OnComplete(DisableMe);//.SetRelative();
     }
 
     void DisableMe()

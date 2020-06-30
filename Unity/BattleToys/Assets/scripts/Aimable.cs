@@ -18,7 +18,6 @@ public class Aimable :  MonoBehaviour
 
     public float verticalTurnSpeed;
 
-    public Vector3 xQuaternion;
 
     public AimMode aimMode=AimMode.Nothing;
 
@@ -154,7 +153,7 @@ public class Aimable :  MonoBehaviour
         //verticalTurningTransform.localRotation = xQuaternion * Quaternion.AngleAxis(turretAngle, Vector3.left);        
     }
     
-    
+
     
 }
 
