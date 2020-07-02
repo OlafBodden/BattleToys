@@ -94,7 +94,7 @@ public class Shootable : NetworkBehaviour
 
         if (weaponTypeStats.weapontType==WeaponType.Laserbeam) HandleLaserBeam();
 
-        if (weaponTypeStats.weapontTYpe == WeaponType.Rocket) HandleRockets();
+        if (weaponTypeStats.weapontType == WeaponType.Rocket) HandleRocket();
 
     }
 
@@ -396,7 +396,17 @@ public class Shootable : NetworkBehaviour
     [ClientRpc]
     void RpcReload()
     {
-        isLoaded = true;
+        //numberShotsLeft = 1;    //ToDo - Read from ScriptableObject?
+        numberShotsLeft = shootableStats.ammoAmount;
+    }
+
+    public bool NeedsToReload()
+    {
+        if (shootableStats.needToReload==false) return false;
+
+        if (numberShotsLeft<shootableStats.ammoAmount) return true;
+
+        return false;
     }
 
 }

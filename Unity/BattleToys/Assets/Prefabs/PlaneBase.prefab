@@ -305,7 +305,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3083232570713562446}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3c42d71a5506a32428a8e63ea3aa5316, type: 3}
   m_Name: 
@@ -316,6 +316,9 @@ MonoBehaviour:
     type: 3}
   landingPosition: {fileID: 7647214650145986710}
   openRange: 20
+  numberUnitsInStock: 1
+  unitConstructionTime: 5
+  reloadTime: 2
 --- !u!114 &5259345117731763917
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -66,6 +66,8 @@ public class ShootableStats
     public bool reloadAfterEachShot;
     public float reloadTime;
 
+    public int ammoAmount=1;
+
     public bool reloadsAtItsBase;
 }
 

@@ -57,7 +57,7 @@ public class BTObject : NetworkBehaviour
         selectable=this.transform.GetComponent<Selectable>();
         aimable=this.transform.GetComponent<Aimable>();
         hitable=this.transform.GetComponent<Hitable>();
-        unitBase = this.transform.GetComponent<unitBase>();
+        unitBase = this.transform.GetComponent<UnitBase>();
 
         /* --> now done in StartPlacing()*/
         //Disable our behaviors. On start, we are in placing-Mode. Nothing to do for all other behaviors
@@ -88,7 +88,7 @@ public class BTObject : NetworkBehaviour
         selectable=this.transform.GetComponent<Selectable>();
         aimable=this.transform.GetComponent<Aimable>();
         hitable=this.transform.GetComponent<Hitable>();
-        unitBase = this.transform.GetComponent<unitBase>();
+        unitBase = this.transform.GetComponent<UnitBase>();
 
         //Disable everything as long as we are not in Match-Mode
         if (moveable) moveable.enabled = false;
@@ -208,7 +208,7 @@ public class BTObject : NetworkBehaviour
     }
 
     [Command]
-    void CmdPlaced(Vector3 position, Quaternion rotation)
+    public void CmdPlaced(Vector3 position, Quaternion rotation)
     {
         //Let the server place the object corrently
         this.transform.position=position;
@@ -387,6 +387,11 @@ public class BTObject : NetworkBehaviour
         return hitable.IsAlive();
     }
 
+    public bool NeedsToReload()
+    {
+        if (shootable==null) return false;
+        return shootable.NeedsToReload();
+    }
 
 }
 

@@ -41,6 +41,7 @@ MonoBehaviour:
     reloadAfterSeconds: 0
     reloadAfterEachShot: 1
     reloadTime: 0
+    ammoAmount: 2
     reloadsAtItsBase: 1
   captureStats:
     canCaptureChest: 0

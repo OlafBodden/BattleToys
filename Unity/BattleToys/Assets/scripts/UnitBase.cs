@@ -109,7 +109,7 @@ public class UnitBase : NetworkBehaviour
         {
             CmdClose();
 
-            invoke(nameof(CmdCreateUnit), createTime); //Will call callback RpcOnNewUnitCreated
+            Invoke(nameof(CmdCreateUnit), createTime); //Will call callback RpcOnNewUnitCreated
 
         }
 
@@ -154,7 +154,7 @@ public class UnitBase : NetworkBehaviour
     [ClientRpc]
     void RpcOnNewUnitCreated(GameObject newUnit)
     {
-        myUnit = newUnit.GetComponent<btObject>();
+        myUnit = newUnit.GetComponent<BTObject>();
 
         inConstruction = false;
 
@@ -209,7 +209,7 @@ public class UnitBase : NetworkBehaviour
     /// <returns></returns>
     bool HasUnit()
     {
-        if (myUnit == null) return null;
+        if (myUnit == null) return false;
 
         return myUnit.IsAlive();
 
