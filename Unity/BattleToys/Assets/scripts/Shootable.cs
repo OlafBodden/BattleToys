@@ -14,36 +14,38 @@ public class Shootable : NetworkBehaviour
     private BTObject btObject;              //Reference to the BTObject, containing this instance
     private ShootableStats shootableStats;  //Reference to the object's ShootableStats
 
-    private WeapontTypeSO weaponTypeStats;
-    public GameObject shotPrefab;
+    private WeapontTypeSO weaponTypeStats;  //Reference to the object's WeaponSystemStats
+    public GameObject shotPrefab;           //prefab for shots (e.g. Cannonball-prefab)
 
-    public LineRenderer lineRenderer;
+    public LineRenderer lineRenderer;       //for Laser-shots. Not neccessary for shots like cannonball
 
-    public Transform shootPosition;
+    public Transform shootPosition;         //Position where the shot/beam/granate/bomb comes out
+    public Transform secondaryShootPosition;//If we have two shoot-positions, this is the second one
 
-    float lastReloadTime=0f;
+    float lastReloadTime=0f;                //stores the last time, we reloaded our weapont. Not neccessary for non-reloading-weapons (like Laserbeam)
 
-    float lastLaserApplyDamageTime=0f;
-
-
-
+    float lastLaserApplyDamageTime=0f;      //used for contiouing weapons like laserbeam to apply damage over time
 
 
-    public float attackRange=10f;
-
-    public float initialShootSpeed=10f;
-
-    public LayerMask layerMaskToShootAt;
 
 
-    Hitable enemyToShootAt;
-    bool isAttacking;
 
-    public delegate void EnemyIsGone();
+    public float attackRange=10f;           //Only enemies inside this range can be shot
 
+    public float initialShootSpeed=10f;     //used for projectiles like cannonball or granate. Not used for lasers, bombs or spitfire
+
+    public LayerMask layerMaskToShootAt;    //Only gameobjects of one of this layers can be attacked
+
+
+    Hitable enemyToShootAt;                 //If we are in attack-mode, this is our target
+    bool isAttacking;                       //true, if we are in attack-mode
+
+    public delegate void EnemyIsGone();     //Called, when our current target can't be attacked any more (out of range or dead)
     EnemyIsGone EnemyIsGoneDelegate;
 
-    float updateIntervall;  //For Syncing Vars with Server/Clients: LineRenderer
+    float updateIntervall;                  //For Syncing Vars with Server/Clients: LineRenderer
+
+    int numberShotsLeft = 1;                   //If we need to reload ammo at our base, this var is used to store state
 
     [Client]
     public void Init(BTObject btObject, ShootableStats shootableStats, WeapontTypeSO weaponTypeStats)
@@ -86,11 +88,16 @@ public class Shootable : NetworkBehaviour
     {
         if (!shootableStats.canShoot) return;
 
+        if (numberShotsLeft==0) return;
+
         if (weaponTypeStats.weapontType==WeaponType.Cannonball) HandleCannonball();
 
         if (weaponTypeStats.weapontType==WeaponType.Laserbeam) HandleLaserBeam();
 
+        if (weaponTypeStats.weapontTYpe == WeaponType.Rocket) HandleRockets();
+
     }
+
 
     void HandleCannonball()
     {
@@ -99,12 +106,35 @@ public class Shootable : NetworkBehaviour
             if ((lastReloadTime + shootableStats.reloadTime) < Time.time)
             {
                 CmdCreateShot(shootPosition.position, shootPosition.rotation, initialShootSpeed);
+                if (secondaryShootPosition != null)
+                {
+                    CmdCreateShot(secondaryShootPosition.position, secondaryShootPosition.rotation, initialShootSpeed);
+                }
 
-                lastReloadTime=Time.time;
+                lastReloadTime =Time.time;
             }
         }
-
         
+    }
+
+    void HandleRocket()
+    {
+        if (numberShotsLeft == 0) return;
+
+        if (shootableStats.needToReload)
+        {
+            if ((lastReloadTime + shootableStats.reloadTime) < Time.time)
+            {
+                CmdCreateShot(shootPosition.position, shootPosition.rotation, initialShootSpeed);
+
+                if (secondaryShootPosition!=null)
+                {
+                    CmdCreateShot(secondaryShootPosition.position, secondaryShootPosition.rotation, initialShootSpeed);
+                }
+
+                lastReloadTime = Time.time;
+            }
+        }
     }
 
     void HandleLaserBeam()
@@ -357,6 +387,16 @@ public class Shootable : NetworkBehaviour
     }
 
 
+    [Command]
+    public void CmdReload()
+    {
+        RpcReload();
+    }
 
+    [ClientRpc]
+    void RpcReload()
+    {
+        isLoaded = true;
+    }
 
 }

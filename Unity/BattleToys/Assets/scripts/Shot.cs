@@ -102,7 +102,7 @@ public class Shot : Mirror.NetworkBehaviour
 
                 enemyHitable.CmdTakeDamage(damageAmount, collisionInfo.contacts[0].point, collisionInfo.contacts[0].normal,EffectType.SparkleSmall);
             
-                DestroySelf();
+                DestroySelf();  //If we hit an eneny, we destroy ourself
             }
         }
 

@@ -1,0 +1,109 @@
+Wie kann ObjectPooling im Mulitplayer umgesetzt werden?
+
+[Voraussetzungen]
+Alle Objekte haben mindestens eine NetworkID-Component
+
+
+[Objekte]
+Pro Objecttyp und Player gibt es auf dem Server einen Pool
+Pro Objecttyp und Player gibt es auf dem Client einen Pool
+
+[Initialisierungsphase]
+Server erstellt Pool und spawned die Objekte 
+Client erstellt damit eigene Pools
+
+Server ruft für alle Objekte die UnSpawn-Message auf.
+Clients implementieren Custom Spawn Handler, um die Objekte in der Client-Scene nicht zu destroyen sondern inaktiv zu setzen.
+
+[Action-Phase]
+Client ruft eine Server-RPC auf (oder einfach Spawn()?) und bekommt als Resultat die zugehörige NetworkID-Component
+Server aktiviert das Objekt mit dieser ID
+Sämtliche Clients aktivieren das Objekt mit dieser ID
+--> um Authority muss sich nicht gekümmert werden, da bereits in der Initialisierungsphase erledigt
+
+Wenn Objekt nicht mehr benötigt wird, ruft entweder der Besitzer-Client oder der Server die Unspan-Methode erneut auf
+Über den Custom Spawn Handler wird das Objekt dann auf jedem Client wieder deaktiviert.
+
+
+[Fragen]
+- Funktioniert UnSpawn so wie beschrieben? Ist danach ein Spawn wieder möglich? Viele berichten von Fehlermeldungen von UNet https://mirror-networking.com/docs/api/Mirror.NetworkServer.html#Mirror_NetworkServer_dontListen
+- Wie implementiert man einen Custom Spawn Handler? https://docs.unity3d.com/Manual/UNetCustomSpawning.html
+
+
+
+[Klassenmodell]
+public class ObjectPool
+{
+	public enum objectType;
+	public int size;
+	public Transform poolParent;
+	
+	
+	Stack<GameObject> inStock;
+	List<GameObject> inGame;
+	
+	[Server]
+	ServerInit()
+	{
+		inStock=new Stack<GameObject>();
+		inGame=new List<GameObjects>();
+		
+		for (int i=0; i<size; i++)
+		{
+			GameObject go=GameObject.Instantiate(GetPrefab(objectType));
+			go.SetActive(false);
+			inStock.Push(go);
+		}
+	}
+	
+	[Server]
+	GameObject SpawnFromPool()
+	{
+		if (inStock.count>0) 
+		{
+			GameObject result=inStock.Pop();
+			inGame.Push(result);
+			result.SetActive(true);
+			retrun result;
+		} else
+		{
+			return null;
+		}
+	}
+	
+	[Server]
+	GameObject SpawnFromPool(Transform parent)
+	{
+		GameObject go=SpawnFromPool();
+		go.transform.SetParent(parent);
+	}
+	
+	[Server]
+	void UnSpawn(GameObject g)
+	{
+		g.SetActive(false);
+		g.transform.SetParent(poolParent);
+		if (inGame.Remove(g) ==true)
+		{
+			inStock.Push(g);
+		}
+	}
+}
+
+public class PlayerPools
+{
+	public enum ObjectType
+	
+	List<ObjectPool> objectPool;
+}
+
+public class PoolManager
+{
+	
+}
+
+
+
+
+
+ 

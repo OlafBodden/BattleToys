@@ -22,6 +22,7 @@ public class BTObject : NetworkBehaviour
     private Selectable selectable;
     private Aimable aimable;
     private Hitable hitable;
+    private UnitBase unitBase;
 
     //enum for MoveAimAttack-StateMachine-State
     MoveAndAttackState moveAndAttackState=MoveAndAttackState.Nothing;
@@ -37,7 +38,7 @@ public class BTObject : NetworkBehaviour
 
 
 
-
+    //Called only, if we are the owner ot this object
     public override void OnStartAuthority() 
     {
         base.OnStartAuthority();
@@ -56,6 +57,7 @@ public class BTObject : NetworkBehaviour
         selectable=this.transform.GetComponent<Selectable>();
         aimable=this.transform.GetComponent<Aimable>();
         hitable=this.transform.GetComponent<Hitable>();
+        unitBase = this.transform.GetComponent<unitBase>();
 
         /* --> now done in StartPlacing()*/
         //Disable our behaviors. On start, we are in placing-Mode. Nothing to do for all other behaviors
@@ -64,6 +66,7 @@ public class BTObject : NetworkBehaviour
         if (selectable) selectable.enabled = false;
         if (aimable) aimable.enabled = false;
         if (hitable) hitable.enabled = false;
+        if (unitBase) unitBase.enabled = false;
         
 
         //Initialize our behaviors
@@ -72,6 +75,7 @@ public class BTObject : NetworkBehaviour
     }
 
     //Called after OnStartAuthority
+    //Is called for each client, no matter if we are owner of this object or not 
     public override void OnStartClient()
     {
         if (base.hasAuthority) return; //If we have authority we have allready done initialization
@@ -84,6 +88,7 @@ public class BTObject : NetworkBehaviour
         selectable=this.transform.GetComponent<Selectable>();
         aimable=this.transform.GetComponent<Aimable>();
         hitable=this.transform.GetComponent<Hitable>();
+        unitBase = this.transform.GetComponent<unitBase>();
 
         //Disable everything as long as we are not in Match-Mode
         if (moveable) moveable.enabled = false;
@@ -91,7 +96,8 @@ public class BTObject : NetworkBehaviour
         if (selectable) selectable.enabled = false;
         if (aimable) aimable.enabled = false;
         if (hitable) hitable.enabled = false;
-        
+        if (unitBase) unitBase.enabled = false;
+
 
         //Initialize our behaviors
         // moveable?.Init(this);
@@ -189,6 +195,7 @@ public class BTObject : NetworkBehaviour
         if (selectable) selectable.enabled = false;
         if (aimable) aimable.enabled = false;
         if (hitable) hitable.enabled = false;
+        if (unitBase) unitBase.enabled = false;
 
         //Disable rigidbody (will be enabled after placing is finished
         if (GetComponent<Rigidbody>() != null)
@@ -242,6 +249,12 @@ public class BTObject : NetworkBehaviour
         {
             hitable.enabled = true;
             hitable.Init(this, this.maxHealth);
+        }
+
+        if (unitBase)
+        {
+            unitBase.enabled = true;
+            unitBase.Init(this);
         }
 
         //re-enable rigidbody
@@ -389,5 +402,7 @@ public enum MoveAndAttackState
 
     Aiming,
 
-    Attack
+    Attack,
+
+    ReturningToBase
 }
