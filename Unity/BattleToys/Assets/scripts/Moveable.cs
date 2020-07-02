@@ -19,7 +19,9 @@ public class Moveable : NetworkBehaviour
 
     Rigidbody _rigidbody;
     NavMeshAgent agent;
- 
+
+    UnitBase myUnitBase;            //For planes and helis only. Stores reference to their base.
+
     [SyncVar]
     Vector3 realPosition = Vector3.zero;
     [SyncVar]
@@ -32,23 +34,36 @@ public class Moveable : NetworkBehaviour
 
     public void Init(BTObject btObject, MoveableStats moveableStats)
     {
-        this.btObject=btObject;
+        Init(btObject, moveableStats);
+    }
+
+    public void Init(BTObject btObject, MoveableStats moveableStats, UnitBase unitBase=null)
+    {
+        this.btObject = btObject;
         this.moveableStats = moveableStats;
+        this.myUnitBase = unitBase;
 
         _rigidbody = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
 
         if (moveableStats.canMove)
         {
-            if (moveableStats.moveType==MoveType.NavMeshAgent)
+            if (moveableStats.moveType == MoveType.NavMeshAgent)
             {
                 InitNavMeshAgent();
-            } else if (moveableStats.moveType == MoveType.PhysicsMovement)
+            }
+            else if (moveableStats.moveType == MoveType.PhysicsMovement)
             {
                 InitPhysics();
             }
-        }
+            else if (moveableStats.moveType==MoveType.FlyingLinear)
+            {
+                //no NavMesh-Agent needed, no Physics needed
+                if (_rigidbody) _rigidbody.isKinematic = true;
+                
 
+            }
+        }
     }
 
     void InitNavMeshAgent()

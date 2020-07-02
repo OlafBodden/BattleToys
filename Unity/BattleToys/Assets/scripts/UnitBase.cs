@@ -140,6 +140,8 @@ public class UnitBase : NetworkBehaviour
 
         myUnit = go.GetComponent<BTObject>();
 
+        myUnit.CmdPlaced(this.landingPosition.position, this.landingPosition.rotation);
+
         RpcOnNewUnitCreated(go);
 
         RpcOpen();
