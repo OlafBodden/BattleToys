@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 494330369271895684}
   - component: {fileID: 8034965952829339054}
   - component: {fileID: 5231122918584808123}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: HalbkugelRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7647214650145986710}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LandingPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 3083232569213354281}
   - component: {fileID: 3083232569213354279}
   - component: {fileID: 3083232569213354278}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: HalbkugelLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -204,7 +204,7 @@ GameObject:
   - component: {fileID: 1698999078}
   - component: {fileID: 5259345117731763917}
   - component: {fileID: 7279089714886615935}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PlaneBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -305,7 +305,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3083232570713562446}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3c42d71a5506a32428a8e63ea3aa5316, type: 3}
   m_Name: 
@@ -331,6 +331,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8c7ba7e9c7d84e44b60c40dfd4d5241, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  selectableStats:
+    isSelectable: 0
+    selectTargetWhenSelected: 0
+    selectBaseWhenSelected: 0
+    showMoveTargetPositionWhenSelected: 0
+    showStatsWhenSelected: 0
+  isSelected: 0
+  isSelectedAsHoverUnit: 0
+  isSelectedAsHoverTarget: 0
+  isSelectedAsUnit: 0
+  isSelectedAsTarget: 0
 --- !u!54 &7279089714886615935
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -357,7 +369,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6090035262600008397}
   - component: {fileID: 8371145380554312105}
-  m_Layer: 11
+  m_Layer: 10
   m_Name: Projector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -408,8 +420,8 @@ GameObject:
   - component: {fileID: 7818739766927733934}
   - component: {fileID: 887566311489741680}
   - component: {fileID: 1180906027605115718}
-  - component: {fileID: 8276025102739194047}
-  m_Layer: 0
+  - component: {fileID: 49807581791903727}
+  m_Layer: 10
   m_Name: PlanetBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -477,8 +489,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!135 &8276025102739194047
-SphereCollider:
+--- !u!65 &49807581791903727
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -488,5 +500,5 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 9.561653
-  m_Center: {x: 0.19341469, y: 0.51, z: -0.13636017}
+  m_Size: {x: 19.123306, y: 3.5049143, z: 19.123306}
+  m_Center: {x: 0.19341469, y: 1.7545938, z: -0.13636017}

@@ -1,26 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 
 public class Selectable : MonoBehaviour
 {
 
 
-    BTPlayer player;
+    [ReadOnly, SerializeField] BTPlayer player;
     BTObject btObject;
 
-    SelectableStats selectableStats;
+    [ReadOnly, SerializeField] private SelectableStats selectableStats;
 
     Projector markingProjector;
 
 
 
-    bool isSelected =false;
-    bool isSelectedAsHoverUnit=false;
-    bool isSelectedAsHoverTarget=false;
-    bool isSelectedAsUnit=false;
-    bool isSelectedAsTarget=false;
+    [ReadOnly, SerializeField] bool isSelected =false;
+    [ReadOnly, SerializeField] bool isSelectedAsHoverUnit=false;
+    [ReadOnly, SerializeField] bool isSelectedAsHoverTarget=false;
+    [ReadOnly, SerializeField] bool isSelectedAsUnit=false;
+    [ReadOnly, SerializeField] bool isSelectedAsTarget=false;
 
     // Start is called before the first frame update
     public void Init(BTPlayer player, BTObject btObject, SelectableStats selectableStats)

@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+
 public class UnitBase : NetworkBehaviour
 {
     BTObject btObject;
     BTObject myUnit;
     Animator myAnimator;
 
-    [SerializeField] private GameObject myUnitPrefab;           //Prefab of unit (heli, plane,...)
+    public GameObject myUnitPrefab;           //Prefab of unit (heli, plane,...)
 
-    [SerializeField] private Transform landingPosition;         //Each Base has to have a dedicated landing position
+    public Transform landingPosition;         //Each Base has to have a dedicated landing position
 
     [SerializeField] private float openRange=10f;               //If our unit is insied this range, base is opened, otherwise closed
 
@@ -134,9 +135,10 @@ public class UnitBase : NetworkBehaviour
     [Command]
     void CmdCreateUnit()
     {
+        
         GameObject go = GameObject.Instantiate(myUnitPrefab, this.transform.position + landingPosition.localPosition, this.transform.rotation);
 
-        NetworkServer.Spawn(go);
+        NetworkServer.Spawn(go,base.connectionToClient);
 
         myUnit = go.GetComponent<BTObject>();
 
@@ -145,6 +147,7 @@ public class UnitBase : NetworkBehaviour
         RpcOnNewUnitCreated(go);
 
         RpcOpen();
+        
     }
 
     /// <summary>
@@ -155,6 +158,7 @@ public class UnitBase : NetworkBehaviour
     void RpcOnNewUnitCreated(GameObject newUnit)
     {
         myUnit = newUnit.GetComponent<BTObject>();
+ 
 
         inConstruction = false;
 
@@ -184,7 +188,10 @@ public class UnitBase : NetworkBehaviour
     [Command]
     void CmdReload()
     {
-        myUnit.GetComponent<Shootable>()?.CmdReload();     //Reload unit
+        Shootable shootable;
+
+        shootable=myUnit.GetComponent<Shootable>();
+        if (shootable) shootable.CmdReload();     //Reload unit
 
         inReloading = false;    //Finished reloading
 

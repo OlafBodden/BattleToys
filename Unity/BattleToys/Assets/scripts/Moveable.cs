@@ -34,7 +34,7 @@ public class Moveable : NetworkBehaviour
 
     public void Init(BTObject btObject, MoveableStats moveableStats)
     {
-        Init(btObject, moveableStats);
+        Init(btObject, moveableStats,null);
     }
 
     public void Init(BTObject btObject, MoveableStats moveableStats, UnitBase unitBase=null)

@@ -19,7 +19,7 @@ MonoBehaviour:
     isSelectable: 1
     selectTargetWhenSelected: 1
     selectBaseWhenSelected: 1
-    showMoveTargetPositionWhenSelected: 0
+    showMoveTargetPositionWhenSelected: 1
     showStatsWhenSelected: 0
   moveableStats:
     canMove: 1

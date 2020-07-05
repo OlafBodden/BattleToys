@@ -409,6 +409,8 @@ public class BTPlayer : NetworkBehaviour
     [Client]
     public void PlayerAuthorizedBTObjectWasSpawned(GameObject go)
     { 
+        if (this.playerState!=PlayerState.Shopping) return; //outside of shopping mode this is irrelevant
+        
         //As we are in Shop-Mode, when a new object is spawned, we need to initialize it.
         //After that, we are in Placing-Mode
 

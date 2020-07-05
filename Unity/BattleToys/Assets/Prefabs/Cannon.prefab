@@ -642,9 +642,14 @@ MonoBehaviour:
   syncInterval: 0.1
   shotPrefab: {fileID: 582927963240110583, guid: a4d88710ea1d1e3459b7bd3c210ff385,
     type: 3}
+  lineRenderer: {fileID: 0}
   shootPosition: {fileID: 5991844780058367878}
+  secondaryShootPosition: {fileID: 0}
   attackRange: 50
   initialShootSpeed: 25
+  layerMaskToShootAt:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &1847226495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -671,6 +676,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8c7ba7e9c7d84e44b60c40dfd4d5241, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  selectableStats:
+    isSelectable: 0
+    selectTargetWhenSelected: 0
+    selectBaseWhenSelected: 0
+    showMoveTargetPositionWhenSelected: 0
+    showStatsWhenSelected: 0
+  isSelected: 0
+  isSelectedAsHoverUnit: 0
+  isSelectedAsHoverTarget: 0
+  isSelectedAsUnit: 0
+  isSelectedAsTarget: 0
 --- !u!195 &-1114224833353348663
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -691,7 +708,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 5
   m_ObstacleAvoidanceType: 4
 --- !u!114 &6453278289316315606
 MonoBehaviour:
@@ -756,7 +773,6 @@ MonoBehaviour:
   shootPositionTransform: {fileID: 5991844780058367878}
   horizontalTurnSpeed: 50
   verticalTurnSpeed: 50
-  xQuaternion: {x: 0, y: 0, z: 0}
   aimMode: 3
 --- !u!1 &5000509427182174648
 GameObject:
