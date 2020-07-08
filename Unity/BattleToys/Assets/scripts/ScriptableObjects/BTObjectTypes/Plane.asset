@@ -38,11 +38,11 @@ MonoBehaviour:
     canShootToLand: 1
     canShootToAir: 0
     needToReload: 1
-    reloadAfterSeconds: 0
-    reloadAfterEachShot: 1
-    reloadTime: 0
+    reloadAfterSeconds: 1
+    reloadAfterEachShot: 0
+    reloadTime: 1
     ammoAmount: 2
-    reloadsAtItsBase: 1
+    reloadsAtItsBase: 0
   captureStats:
     canCaptureChest: 0
     canCaptureTheFlag: 0

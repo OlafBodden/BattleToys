@@ -172,18 +172,23 @@ public class BTObject : NetworkBehaviour
             } 
         } else if ( moveAndAttackState==MoveAndAttackState.Attack)
         {
-            if (aimable.Aim(enemyToShootAt.GetPreferedHitPosition(),true,shootable.initialShootSpeed)==false)
+            if (aimable)
             {
-                shootable.CancelAttack();
-                moveAndAttackState=MoveAndAttackState.Aiming;
-            } else
-            {
-                //stay in attack-mode...
+                if (aimable.Aim(enemyToShootAt.GetPreferedHitPosition(),true,shootable.initialShootSpeed)==false)
+                {
+                    shootable.CancelAttack();
+                    moveAndAttackState=MoveAndAttackState.Aiming;
+                } 
             }
         }
         
 
 
+    }
+
+    public void SetBase(UnitBase unitBase)
+    {
+        if (moveable) moveable.SetBase(unitBase);
     }
 
     //Called by BTPlayer, when a new BTObject is beeing placed (--> attached to mouse)
@@ -318,7 +323,15 @@ public class BTObject : NetworkBehaviour
         moveAndAttackState=MoveAndAttackState.Move;
 
         //tell our BTObject to move toward the new target
-        moveable.MoveToDestination(enemyToShootAt.transform.position);
+        if ((btObjectSO.moveableStats.moveType==MoveType.NavMeshAgent) ||
+            (btObjectSO.moveableStats.moveType==MoveType.PhysicsMovement))
+        {
+            moveable.MoveToDestination(enemyToShootAt.transform.position);
+
+        } else if (btObjectSO.moveableStats.moveType==MoveType.FlyingLinear)
+        {
+            moveable.FlyToTarget(enemyToShootAt.transform);
+        }
 
         //tell our shootable allready the new Target (it does nothing else then registering it)
         shootable?.SetTarget(enemyToShootAt);

@@ -158,6 +158,7 @@ public class UnitBase : NetworkBehaviour
     void RpcOnNewUnitCreated(GameObject newUnit)
     {
         myUnit = newUnit.GetComponent<BTObject>();
+        myUnit.SetBase(this);
  
 
         inConstruction = false;
@@ -308,6 +309,16 @@ public class UnitBase : NetworkBehaviour
     void RpcUnitDied()
     {
         this.myUnit = null;
+    }
+
+    public Vector3 GetLandingPosition()
+    {
+        return landingPosition.position;
+    }
+
+    public Quaternion GetLandingRotation()
+    {
+        return landingPosition.rotation;
     }
 }
 

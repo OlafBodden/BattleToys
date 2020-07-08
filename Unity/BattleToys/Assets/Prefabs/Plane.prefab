@@ -159,6 +159,36 @@ Transform:
   m_Father: {fileID: 7436464816104629765}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6696152092519899759
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5409506009188293053}
+  m_Layer: 11
+  m_Name: ShootPosition2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5409506009188293053
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6696152092519899759}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.31, y: 0.57, z: 2.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7436464816104629765}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7047009082473166294
 GameObject:
   m_ObjectHideFlags: 0
@@ -198,6 +228,8 @@ Transform:
   - {fileID: 5946566355603160586}
   - {fileID: 1200788685}
   - {fileID: 2281751803640568420}
+  - {fileID: 8624709813631319628}
+  - {fileID: 5409506009188293053}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -328,15 +360,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  shotPrefab: {fileID: 0}
+  shotPrefab: {fileID: 582927963240110583, guid: a4d88710ea1d1e3459b7bd3c210ff385,
+    type: 3}
   lineRenderer: {fileID: 0}
-  shootPosition: {fileID: 0}
-  secondaryShootPosition: {fileID: 0}
-  attackRange: 50
+  shootPosition: {fileID: 8624709813631319628}
+  secondaryShootPosition: {fileID: 5409506009188293053}
+  attackRange: 30
   initialShootSpeed: 10
   layerMaskToShootAt:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 3072
 --- !u!114 &2310725555427868048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -352,3 +385,33 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   preferedHitPositionTransform: {fileID: 2281751803640568420}
+--- !u!1 &7773608474227719462
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8624709813631319628}
+  m_Layer: 11
+  m_Name: ShootPosition1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8624709813631319628
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7773608474227719462}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.31, y: 0.57, z: 2.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7436464816104629765}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

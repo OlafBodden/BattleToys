@@ -27,6 +27,16 @@ public class Moveable : NetworkBehaviour
     [SyncVar]
     Quaternion realRotation;
 
+    Transform flyingDestinationTarget;
+    FlyingStates flyingStates=FlyingStates.Landed;
+
+    float flyStartLandSpeed=1f;
+    float flySpeed=2f;
+    float flyDesiredAltitude=15f;
+    float flyStartLandCurrentLerpValue=0;
+    float flyFlyLerpValue=0;
+
+
      
     private float updateInterval;   //Timer for synchronizing position and rotation
  
@@ -41,7 +51,7 @@ public class Moveable : NetworkBehaviour
     {
         this.btObject = btObject;
         this.moveableStats = moveableStats;
-        this.myUnitBase = unitBase;
+        if (unitBase!=null) this.myUnitBase = unitBase;
 
         _rigidbody = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
@@ -66,6 +76,11 @@ public class Moveable : NetworkBehaviour
         }
     }
 
+    public void SetBase(UnitBase unitBase)
+    {
+        this.myUnitBase=unitBase;
+    }
+
     void InitNavMeshAgent()
     {
         _rigidbody.isKinematic = true;
@@ -83,6 +98,20 @@ public class Moveable : NetworkBehaviour
             //if we are an object owned by local player: Do our actions
 
             //ToDo: Currently only NavMesh-Movement is implemented. Impplement Physics and straight movement as well.
+            if (moveableStats.moveType==MoveType.FlyingLinear)
+            {
+                switch (flyingStates)
+                {
+                    case FlyingStates.Starting:
+                        FlyStarting();
+                        break;
+
+                    case FlyingStates.FlyingTowardsTarget:
+                        FlyFlyingTowardsTarget();
+                        break;
+                }
+            } 
+
 
             // update the server with position/rotation
             updateInterval += Time.deltaTime;
@@ -108,12 +137,69 @@ public class Moveable : NetworkBehaviour
     /// <param name="destination"></param>
     public void MoveToDestination(Vector3 destination)
     {
-        if (agent.isStopped) agent.isStopped=false;
-        agent.destination = destination;
+        if (moveableStats.moveType==MoveType.NavMeshAgent)
+        {
+            if (agent.isStopped) agent.isStopped=false;
+            agent.destination = destination;
+
+        } 
 
         //GameObject go=GameObject.CreatePrimitive(PrimitiveType.Cube);
         //go.transform.position=destination;
    
+    }
+
+    public void FlyToTarget(Transform target)
+    {
+        flyingDestinationTarget=target;
+        flyingStates=FlyingStates.Starting;
+        flyStartLandCurrentLerpValue=0;
+    }
+
+    void FlyStarting()
+    {       
+        //Move to flyDesiredAltitude
+        flyStartLandCurrentLerpValue+=flyStartLandSpeed * Time.deltaTime;
+        this.transform.position=Vector3.Lerp(
+            myUnitBase.GetLandingPosition(), 
+            myUnitBase.GetLandingPosition() + Vector3.up*flyDesiredAltitude,
+            flyStartLandCurrentLerpValue);
+
+        //Rotate towards target
+        this.transform.rotation=Quaternion.Lerp(
+            myUnitBase.GetLandingRotation(),
+            Quaternion.LookRotation(flyingDestinationTarget.position - myUnitBase.GetLandingPosition()),
+            flyStartLandCurrentLerpValue
+            );
+        
+
+        if (flyStartLandCurrentLerpValue>=1)
+        {
+            flyingStates=FlyingStates.FlyingTowardsTarget;
+            flyFlyLerpValue=0;
+        }
+    }
+
+    void FlyFlyingTowardsTarget()
+    {
+        Vector3 startPosition=myUnitBase.GetLandingPosition();
+        Vector3 targetPosInAir=flyingDestinationTarget.position;
+        startPosition.y=this.transform.position.y;
+        targetPosInAir.y=this.transform.position.y;
+
+        flyFlyLerpValue+=flySpeed*Time.deltaTime;
+
+        this.transform.position=Vector3.Lerp(startPosition,targetPosInAir,flyFlyLerpValue);
+    }
+
+    void FlyFlyingBackToBase()
+    {
+
+    }
+
+    void FlyLanding()
+    {
+
     }
 
     /// <summary>
@@ -150,9 +236,11 @@ public class Moveable : NetworkBehaviour
     /// </summary>
     public void StopMoving()
     {
-        agent.isStopped=true;
-        agent.destination=this.transform.position;
-        
+        if (moveableStats.moveType==MoveType.NavMeshAgent)
+        {
+            agent.isStopped=true;
+            agent.destination=this.transform.position;
+        }
 
     }
  
@@ -167,4 +255,16 @@ public class Moveable : NetworkBehaviour
         realPosition = position;
         realRotation = rotation;
     }
+}
+
+public enum FlyingStates
+{
+    Starting,
+    FlyingTowardsTarget,
+    Attacking,
+    FlyingBackToBase,
+
+    Landing,
+
+    Landed
 }
